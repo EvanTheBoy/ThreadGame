@@ -15,7 +15,7 @@ public class GameThread implements Runnable, KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        
+
     }
 
     @Override
