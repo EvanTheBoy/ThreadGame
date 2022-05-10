@@ -26,8 +26,6 @@ public class GameUI extends JFrame {
         t.start();
     }
 
-
-
     public static void main(String[] args) {
         new GameUI().showFrame();
     }
