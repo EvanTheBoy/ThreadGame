@@ -1,6 +1,7 @@
 package com.hw.frame;
 
 import com.hw.listener.Listener;
+import com.hw.thread.GameThread;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +21,9 @@ public class GameUI extends JFrame {
         this.addMouseListener(listener);
         this.addMouseMotionListener(listener);
 
+        GameThread gt = new GameThread();
+        Thread t = new Thread(gt);
+        t.start();
     }
 
 
