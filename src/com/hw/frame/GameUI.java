@@ -1,8 +1,6 @@
 package com.hw.frame;
 
 import com.hw.listener.Listener;
-import com.hw.object.FlyObject;
-import com.hw.parameter.Vector;
 import com.hw.thread.GameThread;
 
 import javax.swing.*;

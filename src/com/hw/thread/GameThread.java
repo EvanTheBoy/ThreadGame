@@ -1,6 +1,5 @@
 package com.hw.thread;
 
-import com.hw.object.FlyObject;
 import com.hw.object.Plane;
 import com.hw.parameter.Vector;
 
@@ -37,17 +36,21 @@ public class GameThread implements Runnable, KeyListener {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         switch (key) {
-            case KeyEvent.VK_W:
-
-                plane.move();
-                break;
-            case KeyEvent.VK_A:
-
+            case KeyEvent.VK_W -> plane.setVelocity(0, 5);
+            case KeyEvent.VK_A -> plane.setVelocity(-5, 0);
+            case KeyEvent.VK_S -> plane.setVelocity(0, -5);
+            case KeyEvent.VK_D -> plane.setVelocity(5, 0);
         }
+        //控制飞机移动
+        plane.move();
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-
+        int key = e.getKeyCode();
+        switch (key) {
+            case KeyEvent.VK_W, KeyEvent.VK_A,
+            KeyEvent.VK_D, KeyEvent.VK_S -> plane.setVelocity(0, 0);
+        }
     }
 }
