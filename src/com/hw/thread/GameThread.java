@@ -17,6 +17,7 @@ public class GameThread implements Runnable, KeyListener {
     public GameThread(Graphics g) {
         this.g = g;
         backgroundImage = new ImageIcon(fileAddress + "background.jpg");
+        g.drawImage(backgroundImage.getImage(), 0, 0, null);
         Vector location = new Vector(10, 600);
         Vector velocity = new Vector(0, 0);
         Vector accelerator = new Vector(0, 0);
