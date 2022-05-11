@@ -52,5 +52,6 @@ public class GameThread implements Runnable, KeyListener {
             case KeyEvent.VK_W, KeyEvent.VK_A,
             KeyEvent.VK_D, KeyEvent.VK_S -> plane.setVelocity(0, 0);
         }
+        plane.move();
     }
 }
