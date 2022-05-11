@@ -65,6 +65,13 @@ public class FlyObject {
     public void move() {
         velocity.add(accelerator);
         location.add(velocity);
+        if (location.x < 0 || location.y < 0) {
+            location.x = 0;
+            location.y = 0;
+        } else if (location.x > 1024 || location.y > 1024) {
+            location.x = 1024;
+            location.y = 1024;
+        }
     }
 
     //绘制图形

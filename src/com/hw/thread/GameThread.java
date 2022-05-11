@@ -28,16 +28,15 @@ public class GameThread implements Runnable, KeyListener {
 
     @Override
     public void run() {
-        BufferedImage bufferedImage = new BufferedImage(1024, 768, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bufferedImage = new BufferedImage(1024, 768, BufferedImage.TYPE_INT_RGB);
         Graphics bufG = bufferedImage.getGraphics();
         System.out.println("成功获取缓冲区画笔对象");
+        jf.addKeyListener(this);
         while (true) {
-            jf.addKeyListener(this);
             //获取缓冲区画笔对象
             backgroundImage = new ImageIcon(fileAddress + "background.jpg");
             bufG.drawImage(backgroundImage.getImage(), 0, 0, null);
             plane.drawObject(bufG);
-
             //最后记得把这个也要画出来
             g.drawImage(bufferedImage, 0, 0, null);
         }
@@ -53,13 +52,24 @@ public class GameThread implements Runnable, KeyListener {
         System.out.println("即将获取按键值");
         int key = e.getKeyCode();
         switch (key) {
-            case KeyEvent.VK_W -> plane.setVelocity(0, 5);
-            case KeyEvent.VK_A -> plane.setVelocity(-5, 0);
-            case KeyEvent.VK_S -> plane.setVelocity(0, -5);
-            case KeyEvent.VK_D -> plane.setVelocity(5, 0);
+            case KeyEvent.VK_S -> {
+                plane.setVelocity(0, 5);
+                plane.move();
+            }
+            case KeyEvent.VK_A -> {
+                plane.setVelocity(-5, 0);
+                plane.move();
+            }
+            case KeyEvent.VK_W -> {
+                plane.setVelocity(0, -5);
+                plane.move();
+            }
+            case KeyEvent.VK_D -> {
+                plane.setVelocity(5, 0);
+                plane.move();
+            }
         }
         //控制飞机移动
-        plane.move();
         System.out.println("成功移动");
     }
 
@@ -67,10 +77,11 @@ public class GameThread implements Runnable, KeyListener {
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
         switch (key) {
-            case KeyEvent.VK_W, KeyEvent.VK_A,
-            KeyEvent.VK_D, KeyEvent.VK_S -> plane.setVelocity(0, 0);
+            case KeyEvent.VK_W, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_S -> {
+                plane.setVelocity(0, 0);
+                plane.move();
+            }
         }
-        plane.move();
         System.out.println("停止");
     }
 }
