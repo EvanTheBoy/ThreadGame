@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 
 public class GameThread implements Runnable, KeyListener {
     public Graphics g;
@@ -16,8 +17,6 @@ public class GameThread implements Runnable, KeyListener {
     public static String fileAddress = "img/"; //图片的存储根目录
     public GameThread(Graphics g) {
         this.g = g;
-        backgroundImage = new ImageIcon(fileAddress + "background.jpg");
-        g.drawImage(backgroundImage.getImage(), 0, 0, null);
         Vector location = new Vector(10, 600);
         Vector velocity = new Vector(0, 0);
         Vector accelerator = new Vector(0, 0);
@@ -27,7 +26,16 @@ public class GameThread implements Runnable, KeyListener {
 
     @Override
     public void run() {
-        plane.drawObject(g);
+        BufferedImage bufferedImage = new BufferedImage(1024, 768, BufferedImage.TYPE_INT_ARGB);
+        Graphics bufG = bufferedImage.getGraphics();
+        System.out.println("成功获取缓冲区画笔对象");
+        while (true) {
+            //获取缓冲区画笔对象
+            backgroundImage = new ImageIcon(fileAddress + "background.jpg");
+            bufG.drawImage(backgroundImage.getImage(), 0, 0, null);
+            plane.drawObject(bufG);
+            System.out.println("绘制工作完毕");
+        }
     }
 
     @Override
