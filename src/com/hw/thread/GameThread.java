@@ -3,6 +3,7 @@ package com.hw.thread;
 import com.hw.object.Plane;
 import com.hw.parameter.Vector;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -11,20 +12,21 @@ public class GameThread implements Runnable, KeyListener {
     public Graphics g;
     private Plane plane;
     private boolean gameRest; //判断游戏是否暂停
+    private ImageIcon backgroundImage; //游戏背景
     public static String fileAddress = "img/"; //图片的存储根目录
     public GameThread(Graphics g) {
         this.g = g;
+        backgroundImage = new ImageIcon(fileAddress + "background.jpg");
         Vector location = new Vector(10, 600);
         Vector velocity = new Vector(0, 0);
         Vector accelerator = new Vector(0, 0);
         //线程刚启动时就画出飞机
         plane = new Plane(location, velocity, accelerator, "command_post.png");
-        plane.drawObject(g);
     }
 
     @Override
     public void run() {
-
+        plane.drawObject(g);
     }
 
     @Override
