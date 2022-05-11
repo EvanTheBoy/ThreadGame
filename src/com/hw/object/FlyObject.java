@@ -30,7 +30,7 @@ public class FlyObject {
         hm.put(imgAddress + "explosion.png", new Vector(50, 50));
     }
 
-    //这里是只有位置、速度和加速度的物体，比如子弹
+    //这里是只有位置、速度和加速度的物体
     public FlyObject(Vector location, Vector velocity, Vector accelerator) {
         this.location = location;
         this.velocity = velocity;

@@ -1,6 +1,8 @@
 package com.hw.frame;
 
 import com.hw.listener.Listener;
+import com.hw.object.FlyObject;
+import com.hw.parameter.Vector;
 import com.hw.thread.GameThread;
 
 import javax.swing.*;
@@ -21,7 +23,8 @@ public class GameUI extends JFrame {
         this.addMouseListener(listener);
         this.addMouseMotionListener(listener);
 
-        GameThread gt = new GameThread();
+        //直接启动游戏线程
+        GameThread gt = new GameThread(g);
         Thread t = new Thread(gt);
         t.start();
     }
