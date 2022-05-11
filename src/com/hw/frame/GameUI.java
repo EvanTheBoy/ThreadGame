@@ -6,23 +6,25 @@ import com.hw.thread.GameThread;
 import javax.swing.*;
 import java.awt.*;
 
-public class GameUI extends JFrame {
+public class GameUI {
     public Graphics g;
+    private JFrame jf;
     public void showFrame() {
-        this.setTitle("战斗吧!");
-        this.setSize(1024, 768);
-        this.setLayout(new FlowLayout());
-        this.setDefaultCloseOperation(3);
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
-        this.g = this.getGraphics();
+        jf = new JFrame();
+        jf.setTitle("战斗吧!");
+        jf.setSize(1024, 768);
+        jf.setLayout(new FlowLayout());
+        jf.setDefaultCloseOperation(3);
+        jf.setLocationRelativeTo(null);
+        jf.setVisible(true);
+        this.g = jf.getGraphics();
 
 //        Listener listener = new Listener();
-//        this.addMouseListener(listener);
-//        this.addMouseMotionListener(listener);
+//        jf.addMouseListener(listener);
+//        jf.addMouseMotionListener(listener);
 
         //直接启动游戏线程
-        GameThread gt = new GameThread(g);
+        GameThread gt = new GameThread(g, jf);
         Thread t = new Thread(gt);
         t.start();
     }

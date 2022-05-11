@@ -12,12 +12,14 @@ import java.awt.image.BufferedImage;
 public class GameThread implements Runnable, KeyListener {
     public Graphics g;
     private Plane plane;
+    private JFrame jf;
     private boolean gameRest; //判断游戏是否暂停
     private ImageIcon backgroundImage; //游戏背景
     public static String fileAddress = "img/"; //图片的存储根目录
-    public GameThread(Graphics g) {
+    public GameThread(Graphics g, JFrame jf) {
         this.g = g;
-        Vector location = new Vector(10, 600);
+        this.jf = jf;
+        Vector location = new Vector(70, 384);
         Vector velocity = new Vector(0, 0);
         Vector accelerator = new Vector(0, 0);
         //线程刚启动时就画出飞机
@@ -30,11 +32,14 @@ public class GameThread implements Runnable, KeyListener {
         Graphics bufG = bufferedImage.getGraphics();
         System.out.println("成功获取缓冲区画笔对象");
         while (true) {
+            jf.addKeyListener(this);
             //获取缓冲区画笔对象
             backgroundImage = new ImageIcon(fileAddress + "background.jpg");
             bufG.drawImage(backgroundImage.getImage(), 0, 0, null);
             plane.drawObject(bufG);
-            System.out.println("绘制工作完毕");
+
+            //最后记得把这个也要画出来
+            g.drawImage(bufferedImage, 0, 0, null);
         }
     }
 
@@ -45,6 +50,7 @@ public class GameThread implements Runnable, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        System.out.println("即将获取按键值");
         int key = e.getKeyCode();
         switch (key) {
             case KeyEvent.VK_W -> plane.setVelocity(0, 5);
@@ -54,6 +60,7 @@ public class GameThread implements Runnable, KeyListener {
         }
         //控制飞机移动
         plane.move();
+        System.out.println("成功移动");
     }
 
     @Override
@@ -64,5 +71,6 @@ public class GameThread implements Runnable, KeyListener {
             KeyEvent.VK_D, KeyEvent.VK_S -> plane.setVelocity(0, 0);
         }
         plane.move();
+        System.out.println("停止");
     }
 }
