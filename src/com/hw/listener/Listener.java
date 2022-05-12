@@ -65,6 +65,7 @@ public class Listener implements ActionListener, MouseMotionListener, MouseListe
             case KeyEvent.VK_A -> plane.setVelocity(-5, 0);
             case KeyEvent.VK_W -> plane.setVelocity(0, -5);
             case KeyEvent.VK_D -> plane.setVelocity(5, 0);
+            case KeyEvent.VK_L -> plane.fire();
         }
     }
 
