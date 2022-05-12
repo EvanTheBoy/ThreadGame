@@ -1,6 +1,5 @@
 package com.hw.frame;
 
-import com.hw.listener.Listener;
 import com.hw.thread.GameThread;
 
 import javax.swing.*;
