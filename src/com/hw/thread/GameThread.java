@@ -53,7 +53,9 @@ public class GameThread implements Runnable {
 
     //生成子弹
     private void generateBullets() {
+        for (FlyObject monster : enemies) {
 
+        }
     }
 
     @Override
