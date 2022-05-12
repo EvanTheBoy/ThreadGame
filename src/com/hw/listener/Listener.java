@@ -57,24 +57,23 @@ public class Listener implements ActionListener, MouseMotionListener, MouseListe
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("即将获取按键值");
+        //获取按键值
         int key = e.getKeyCode();
+        //根据对应按键值进行相应操作
         switch (key) {
             case KeyEvent.VK_S -> plane.setVelocity(0, 1);
             case KeyEvent.VK_A -> plane.setVelocity(-1, 0);
             case KeyEvent.VK_W -> plane.setVelocity(0, -1);
             case KeyEvent.VK_D -> plane.setVelocity(1, 0);
         }
-        //控制飞机移动
-        System.out.println("成功移动");
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        //此处同上，只是操作更改
         int key = e.getKeyCode();
         switch (key) {
             case KeyEvent.VK_W, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_S -> plane.setVelocity(0, 0);
         }
-        System.out.println("停止");
     }
 }

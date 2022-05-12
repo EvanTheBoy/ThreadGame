@@ -27,19 +27,31 @@ public class GameThread implements Runnable {
         listener = new Listener(plane);
     }
 
+    //生成气球僵尸
+    private void generateZombies() {
+
+    }
+
+    //生成子弹
+    private void generateBullets() {
+
+    }
+
     @Override
     public void run() {
+        //获取缓冲区画笔对象
         BufferedImage bufferedImage = new BufferedImage(1024, 768, BufferedImage.TYPE_INT_RGB);
+        //获取缓冲区画笔
         Graphics bufG = bufferedImage.getGraphics();
-        System.out.println("成功获取缓冲区画笔对象");
+        //为界面添加键盘监听器
         jf.addKeyListener(listener);
         while (true) {
-            //获取缓冲区画笔对象
+            //获取游戏背景图
             backgroundImage = new ImageIcon(fileAddress + "background.jpg");
             bufG.drawImage(backgroundImage.getImage(), 0, 0, null);
             plane.drawObject(bufG);
             plane.move();
-            //最后记得把这个也要画出来
+            //最后记得要把这个也画出来
             g.drawImage(bufferedImage, 0, 0, null);
         }
     }
