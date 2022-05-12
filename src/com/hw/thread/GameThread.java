@@ -21,11 +21,12 @@ public class GameThread implements Runnable {
     public static String fileAddress = "img/"; //图片的存储根目录
     private Listener listener;
 
-    private ArrayList<FlyObject> enemies;
+    private ArrayList<FlyObject> enemies, attackers;
     public GameThread(Graphics g, JFrame jf) {
         this.g = g;
         this.jf = jf;
         enemies = new ArrayList<>();
+        attackers = new ArrayList<>();
         Vector location = new Vector(70, 384);
         Vector velocity = new Vector(0, 0);
         Vector accelerator = new Vector(0, 0);
@@ -51,10 +52,18 @@ public class GameThread implements Runnable {
         }
     }
 
-    //生成子弹
+    //生成僵尸发射的子弹
     private void generateBullets() {
         for (FlyObject monster : enemies) {
-
+            //首先获取僵尸的位置
+            int mx = monster.location.x;
+            int my = monster.location.y;
+            Vector loc = new Vector(mx, my);
+            Vector vel = new Vector(-3, 0);
+            Vector acc = new Vector(0, 0);
+            //创建僵尸发射的子弹对象
+            FlyObject attacker = new FlyObject(loc, vel, acc, "zombie_bullet.png");
+            attackers.add(attacker);
         }
     }
 
