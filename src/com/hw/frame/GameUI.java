@@ -19,9 +19,10 @@ public class GameUI {
         jf.setVisible(true);
         this.g = jf.getGraphics();
 
-        Listener listener = new Listener();
-        jf.addMouseListener(listener);
-        jf.addMouseMotionListener(listener);
+//        Listener listener = new Listener();
+//        jf.addMouseListener(listener);
+//        jf.addMouseMotionListener(listener);
+//        jf.addKeyListener(listener);
 
         //直接启动游戏线程
         GameThread gt = new GameThread(g, jf);

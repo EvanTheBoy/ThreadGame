@@ -1,5 +1,6 @@
 package com.hw.thread;
 
+import com.hw.listener.Listener;
 import com.hw.object.Plane;
 import com.hw.parameter.Vector;
 
@@ -9,13 +10,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
-public class GameThread implements Runnable, KeyListener {
+public class GameThread implements Runnable {
     public Graphics g;
     private Plane plane;
     private JFrame jf;
     private boolean gameRest; //判断游戏是否暂停
     private ImageIcon backgroundImage; //游戏背景
     public static String fileAddress = "img/"; //图片的存储根目录
+    private Listener listener;
     public GameThread(Graphics g, JFrame jf) {
         this.g = g;
         this.jf = jf;
@@ -24,6 +26,7 @@ public class GameThread implements Runnable, KeyListener {
         Vector accelerator = new Vector(0, 0);
         //线程刚启动时就画出飞机
         plane = new Plane(location, velocity, accelerator, "command_post.png");
+        listener = new Listener(plane);
     }
 
     @Override
@@ -31,7 +34,7 @@ public class GameThread implements Runnable, KeyListener {
         BufferedImage bufferedImage = new BufferedImage(1024, 768, BufferedImage.TYPE_INT_RGB);
         Graphics bufG = bufferedImage.getGraphics();
         System.out.println("成功获取缓冲区画笔对象");
-        jf.addKeyListener(this);
+        jf.addKeyListener(listener);
         while (true) {
             //获取缓冲区画笔对象
             backgroundImage = new ImageIcon(fileAddress + "background.jpg");
@@ -41,33 +44,5 @@ public class GameThread implements Runnable, KeyListener {
             //最后记得把这个也要画出来
             g.drawImage(bufferedImage, 0, 0, null);
         }
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        System.out.println("即将获取按键值");
-        int key = e.getKeyCode();
-        switch (key) {
-            case KeyEvent.VK_S -> plane.setVelocity(0, 1);
-            case KeyEvent.VK_A -> plane.setVelocity(-1, 0);
-            case KeyEvent.VK_W -> plane.setVelocity(0, -1);
-            case KeyEvent.VK_D -> plane.setVelocity(1, 0);
-        }
-        //控制飞机移动
-        System.out.println("成功移动");
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        int key = e.getKeyCode();
-        switch (key) {
-            case KeyEvent.VK_W, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_S -> plane.setVelocity(0, 0);
-        }
-        System.out.println("停止");
     }
 }
