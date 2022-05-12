@@ -80,6 +80,11 @@ public class GameThread implements Runnable {
                 f.drawObject(bufG);
                 f.move();
             }
+            //生成我机攻击子弹
+            for (FlyObject bullet : plane.bullets) {
+                bullet.drawObject(bufG);
+                bullet.move();
+            }
             //最后记得要把这个也画出来
             g.drawImage(bufferedImage, 0, 0, null);
             try {
