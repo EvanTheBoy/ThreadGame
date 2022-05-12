@@ -73,7 +73,6 @@ public class GameThread implements Runnable {
             //把我方飞机画出来
             plane.drawObject(bufG);
             plane.move();
-
             //生成僵尸
             generateZombies();
             for (FlyObject f : enemies) {
