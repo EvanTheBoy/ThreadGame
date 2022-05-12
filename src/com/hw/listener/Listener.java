@@ -61,10 +61,10 @@ public class Listener implements ActionListener, MouseMotionListener, MouseListe
         int key = e.getKeyCode();
         //根据对应按键值进行相应操作
         switch (key) {
-            case KeyEvent.VK_S -> plane.setVelocity(0, 1);
-            case KeyEvent.VK_A -> plane.setVelocity(-1, 0);
-            case KeyEvent.VK_W -> plane.setVelocity(0, -1);
-            case KeyEvent.VK_D -> plane.setVelocity(1, 0);
+            case KeyEvent.VK_S -> plane.setVelocity(0, 5);
+            case KeyEvent.VK_A -> plane.setVelocity(-5, 0);
+            case KeyEvent.VK_W -> plane.setVelocity(0, -5);
+            case KeyEvent.VK_D -> plane.setVelocity(5, 0);
         }
     }
 

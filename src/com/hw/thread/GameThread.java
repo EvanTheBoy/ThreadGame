@@ -1,24 +1,31 @@
 package com.hw.thread;
 
 import com.hw.listener.Listener;
+import com.hw.object.FlyObject;
 import com.hw.object.Plane;
 import com.hw.parameter.Vector;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class GameThread implements Runnable {
     public Graphics g;
+    private int count = 0;
     private Plane plane;
     private JFrame jf;
     private boolean gameRest; //判断游戏是否暂停
     private ImageIcon backgroundImage; //游戏背景
     public static String fileAddress = "img/"; //图片的存储根目录
     private Listener listener;
+
+    private ArrayList<FlyObject> enemies;
     public GameThread(Graphics g, JFrame jf) {
         this.g = g;
         this.jf = jf;
+        enemies = new ArrayList<>();
         Vector location = new Vector(70, 384);
         Vector velocity = new Vector(0, 0);
         Vector accelerator = new Vector(0, 0);
@@ -29,7 +36,19 @@ public class GameThread implements Runnable {
 
     //生成气球僵尸
     private void generateZombies() {
-
+        if (count % 20 == 0) {
+            Random rand = new Random();
+            int ly = rand.nextInt(512) + 100;
+            int vx = -rand.nextInt(3) - 5;
+            Vector loc = new Vector(1024, ly);
+            Vector vel = new Vector(vx, 0);
+            Vector acc = new Vector(0, 0);
+            FlyObject zombie = new FlyObject(loc, vel, acc, "balloon_zombie.png", 5);
+            //这里之所以要用到队列，是因为僵尸画出来后要一直停留在页面上，也就是不停地画
+            //所以在这里就体现为，每创建出一个僵尸对象，就把它添加进队列中，然后从队列中取出来
+            //不停地画
+            enemies.add(zombie);
+        }
     }
 
     //生成子弹
@@ -49,10 +68,25 @@ public class GameThread implements Runnable {
             //获取游戏背景图
             backgroundImage = new ImageIcon(fileAddress + "background.jpg");
             bufG.drawImage(backgroundImage.getImage(), 0, 0, null);
+            //计时器自增，用来后续随机生成僵尸等
+            ++count;
+            //把我方飞机画出来
             plane.drawObject(bufG);
             plane.move();
+
+            //生成僵尸
+            generateZombies();
+            for (FlyObject f : enemies) {
+                f.drawObject(bufG);
+                f.move();
+            }
             //最后记得要把这个也画出来
             g.drawImage(bufferedImage, 0, 0, null);
+            try {
+                Thread.sleep(30);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
