@@ -4,6 +4,9 @@ import com.hw.thread.GameThread;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class GameUI {
     public Graphics g;
@@ -18,10 +21,9 @@ public class GameUI {
         jf.setVisible(true);
         this.g = jf.getGraphics();
 
-        //直接启动游戏线程
-        GameThread gt = new GameThread(g, jf);
-        Thread t = new Thread(gt);
-        t.start();
+        //优化:使用线程池来管理
+        ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 10, 10, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(10));
+        pool.execute(new GameThread(g, jf));
     }
 
     public static void main(String[] args) {
