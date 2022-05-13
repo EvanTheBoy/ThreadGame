@@ -23,7 +23,8 @@ public class GameUI {
         this.g = jf.getGraphics();
 
         //优化:使用线程池来管理
-        ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 10, 10, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(10));
+        ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 10, 10,
+                TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(10));
         pool.execute(new GameThread(g, jf));
         pool.execute(new ZombieBulletThread());
     }
