@@ -28,6 +28,7 @@ public class FlyObject {
         hm.put(imgAddress + "bullet.png", new Vector(17, 10));
         hm.put(imgAddress + "background.png", new Vector(0, 0));
         hm.put(imgAddress + "explosion.png", new Vector(50, 50));
+        hm.put(imgAddress + "zombie_bullet.png", new Vector(0, 0));
     }
 
     //这里是只有位置、速度和加速度的物体

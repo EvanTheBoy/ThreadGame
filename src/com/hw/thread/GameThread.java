@@ -37,10 +37,10 @@ public class GameThread implements Runnable {
 
     //生成气球僵尸
     private void generateZombies() {
-        if (count % 20 == 0) {
+        if (count % 40 == 0) {
             Random rand = new Random();
             int ly = rand.nextInt(512) + 100;
-            int vx = -rand.nextInt(3) - 5;
+            int vx = -rand.nextInt(1) - 2;
             Vector loc = new Vector(1024, ly);
             Vector vel = new Vector(vx, 0);
             Vector acc = new Vector(0, 0);
@@ -55,15 +55,17 @@ public class GameThread implements Runnable {
     //生成僵尸发射的子弹
     private void generateBullets() {
         for (FlyObject monster : enemies) {
-            //首先获取僵尸的位置
-            int mx = monster.location.x;
-            int my = monster.location.y;
-            Vector loc = new Vector(mx, my);
-            Vector vel = new Vector(-3, 0);
-            Vector acc = new Vector(0, 0);
-            //创建僵尸发射的子弹对象
-            FlyObject attacker = new FlyObject(loc, vel, acc, "zombie_bullet.png");
-            attackers.add(attacker);
+            if (count % 140 == 0) {
+                //首先获取僵尸的位置
+                int mx = monster.location.x;
+                int my = monster.location.y;
+                Vector loc = new Vector(mx - 60, my);
+                Vector vel = new Vector(-3, 0);
+                Vector acc = new Vector(0, 0);
+                //创建僵尸发射的子弹对象
+                FlyObject attacker = new FlyObject(loc, vel, acc, "zombie_bullet.png");
+                attackers.add(attacker);
+            }
         }
     }
 
@@ -89,6 +91,12 @@ public class GameThread implements Runnable {
             for (FlyObject f : enemies) {
                 f.drawObject(bufG);
                 f.move();
+            }
+            generateBullets();
+            //僵尸发射子弹
+            for (FlyObject b : attackers) {
+                b.drawObject(bufG);
+                b.move();
             }
             //生成我机攻击子弹
             for (FlyObject bullet : plane.bullets) {
