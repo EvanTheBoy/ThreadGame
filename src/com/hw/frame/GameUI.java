@@ -1,5 +1,6 @@
 package com.hw.frame;
 
+import com.hw.listener.Listener;
 import com.hw.thread.GameThread;
 import com.hw.thread.ZombieBulletThread;
 
@@ -26,7 +27,7 @@ public class GameUI {
         ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 10, 10,
                 TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(10));
         pool.execute(new GameThread(g, jf));
-        pool.execute(new ZombieBulletThread());
+        pool.execute(new ZombieBulletThread(g));
     }
 
     public static void main(String[] args) {
