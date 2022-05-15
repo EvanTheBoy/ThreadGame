@@ -1,6 +1,6 @@
 package com.hw.object;
 
-import com.hw.parameter.Vector;
+import com.hw.parameter.MyVector;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,11 +11,11 @@ import java.util.HashMap;
  * 是没有hp这种属性的，所以需要根据各种物体的不同属性创建不同的构造方法
  */
 public class FlyObject {
-    public Vector location; //初始位置
-    public Vector velocity; //速度
-    public Vector accelerator; //加速度
+    public MyVector location; //初始位置
+    public MyVector velocity; //速度
+    public MyVector accelerator; //加速度
     public static String imgAddress = "img/"; //存储图片的目录
-    private HashMap<String, Vector> hm = new HashMap<>();
+    private HashMap<String, MyVector> hm = new HashMap<>();
 
     //移动物体的基本参数
     public String imgName; //图片
@@ -23,16 +23,16 @@ public class FlyObject {
     public int hp; //血量
 
     public void initialize() {
-        hm.put(imgAddress + "command_post.png", new Vector(50, 50));
-        hm.put(imgAddress + "balloon_zombie.png", new Vector(50, 50));
-        hm.put(imgAddress + "bullet.png", new Vector(17, 10));
-        hm.put(imgAddress + "background.png", new Vector(0, 0));
-        hm.put(imgAddress + "explosion.png", new Vector(50, 50));
-        hm.put(imgAddress + "zombie_bullet.png", new Vector(0, 0));
+        hm.put(imgAddress + "command_post.png", new MyVector(50, 50));
+        hm.put(imgAddress + "balloon_zombie.png", new MyVector(50, 50));
+        hm.put(imgAddress + "bullet.png", new MyVector(17, 10));
+        hm.put(imgAddress + "background.png", new MyVector(0, 0));
+        hm.put(imgAddress + "explosion.png", new MyVector(50, 50));
+        hm.put(imgAddress + "zombie_bullet.png", new MyVector(0, 0));
     }
 
     //这里是只有位置、速度和加速度的物体
-    public FlyObject(Vector location, Vector velocity, Vector accelerator) {
+    public FlyObject(MyVector location, MyVector velocity, MyVector accelerator) {
         this.location = location;
         this.velocity = velocity;
         this.accelerator = accelerator;
@@ -40,7 +40,7 @@ public class FlyObject {
     }
 
     //有图片的移动物体
-    public FlyObject(Vector location, Vector velocity, Vector accelerator, String imgName) {
+    public FlyObject(MyVector location, MyVector velocity, MyVector accelerator, String imgName) {
         this.location = location;
         this.velocity = velocity;
         this.accelerator = accelerator;
@@ -51,7 +51,7 @@ public class FlyObject {
     }
 
     //有图片和血量的移动物体， 这里包括气球僵尸等
-    public FlyObject(Vector location, Vector velocity, Vector accelerator, String imgName, int HP) {
+    public FlyObject(MyVector location, MyVector velocity, MyVector accelerator, String imgName, int HP) {
         this.location = location;
         this.velocity = velocity;
         this.accelerator = accelerator;

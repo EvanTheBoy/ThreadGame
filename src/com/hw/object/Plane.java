@@ -1,13 +1,13 @@
 package com.hw.object;
 
-import com.hw.parameter.Vector;
+import com.hw.parameter.MyVector;
 
 import java.util.ArrayList;
 
 
 public class Plane extends FlyObject {
     public ArrayList<FlyObject> bullets;
-    public Plane(Vector location, Vector velocity, Vector accelerator, String imgName) {
+    public Plane(MyVector location, MyVector velocity, MyVector accelerator, String imgName) {
         super(location, velocity, accelerator, imgName);
         bullets = new ArrayList<>();
     }
@@ -38,9 +38,9 @@ public class Plane extends FlyObject {
         //获取我机当前的位置
         int originX = this.location.x;
         int originY = this.location.y;
-        Vector loc = new Vector(originX, originY);
-        Vector vel = new Vector(7, 0);
-        Vector acc = new Vector(0, 0);
+        MyVector loc = new MyVector(originX, originY);
+        MyVector vel = new MyVector(7, 0);
+        MyVector acc = new MyVector(0, 0);
         FlyObject bullet = new FlyObject(loc, vel, acc, "bullet.png");
         bullets.add(bullet);
     }

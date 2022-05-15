@@ -3,13 +3,14 @@ package com.hw.thread;
 import com.hw.listener.Listener;
 import com.hw.object.FlyObject;
 import com.hw.object.Plane;
-import com.hw.parameter.Vector;
+import com.hw.parameter.MyVector;
+
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Random;
+import java.util.Vector;
 
 public class GameThread implements Runnable {
     public Graphics g;
@@ -20,16 +21,18 @@ public class GameThread implements Runnable {
     private ImageIcon backgroundImage; //游戏背景
     public static String fileAddress = "img/"; //图片的存储根目录
     private Listener listener;
+    private Random rand;
 
-    private ArrayList<FlyObject> enemies, attackers;
+    public Vector<FlyObject> enemies, attackers;
     public GameThread(Graphics g, JFrame jf) {
         this.g = g;
         this.jf = jf;
-        enemies = new ArrayList<>();
-        attackers = new ArrayList<>();
-        Vector location = new Vector(70, 384);
-        Vector velocity = new Vector(0, 0);
-        Vector accelerator = new Vector(0, 0);
+        rand = new Random();
+        enemies = new Vector<>();
+        attackers = new Vector<>();
+        MyVector location = new MyVector(70, 384);
+        MyVector velocity = new MyVector(0, 0);
+        MyVector accelerator = new MyVector(0, 0);
         //线程刚启动时就画出飞机
         plane = new Plane(location, velocity, accelerator, "command_post.png");
         listener = new Listener(plane);
@@ -38,12 +41,11 @@ public class GameThread implements Runnable {
     //生成气球僵尸
     private void generateZombies() {
         if (count % 40 == 0) {
-            Random rand = new Random();
             int ly = rand.nextInt(512) + 100;
             int vx = -rand.nextInt(1) - 2;
-            Vector loc = new Vector(1024, ly);
-            Vector vel = new Vector(vx, 0);
-            Vector acc = new Vector(0, 0);
+            MyVector loc = new MyVector(1024, ly);
+            MyVector vel = new MyVector(vx, 0);
+            MyVector acc = new MyVector(0, 0);
             FlyObject zombie = new FlyObject(loc, vel, acc, "balloon_zombie.png", 5);
             //这里之所以要用到队列，是因为僵尸画出来后要一直停留在页面上，也就是不停地画
             //所以在这里就体现为，每创建出一个僵尸对象，就把它添加进队列中，然后从队列中取出来
@@ -52,7 +54,22 @@ public class GameThread implements Runnable {
         }
     }
 
-
+    //生成僵尸发射的子弹
+    private void generateBullets() {
+        if (count % 140 == 0) {
+            for (FlyObject monster : enemies) {
+                //然后获取僵尸的位置
+                int mx = monster.location.x;
+                int my = monster.location.y;
+                MyVector loc = new MyVector(mx - 60, my);
+                MyVector vel = new MyVector(-3, 0);
+                MyVector acc = new MyVector(0, 0);
+                //创建僵尸发射的子弹对象
+                FlyObject attacker = new FlyObject(loc, vel, acc, "zombie_bullet.png");
+                attackers.add(attacker);
+            }
+        }
+    }
 
     @Override
     public void run() {
@@ -77,7 +94,12 @@ public class GameThread implements Runnable {
                 f.drawObject(bufG);
                 f.move();
             }
-
+            //僵尸发射子弹
+            for (FlyObject b : attackers) {
+                b.drawObject(bufG);
+                b.move();
+            }
+            generateBullets();
             //生成我机攻击子弹
             for (FlyObject bullet : plane.bullets) {
                 bullet.drawObject(bufG);
