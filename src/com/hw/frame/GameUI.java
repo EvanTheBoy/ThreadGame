@@ -1,5 +1,6 @@
 package com.hw.frame;
 
+import com.hw.thread.EnemyThread;
 import com.hw.thread.GameThread;
 
 import javax.swing.*;
@@ -21,9 +22,14 @@ public class GameUI {
         jf.setVisible(true);
         this.g = jf.getGraphics();
         GameThread gt = new GameThread(g, jf);
+        EnemyThread et = new EnemyThread();
+        gt.enemies = et.enemies;
+        gt.demons = et.demons;
+        gt.attackers = et.attackers;
         //优化:使用线程池来管理
         ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 10, 10,
                 TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(10));
+        pool.execute(et);
         pool.execute(gt);
     }
 
