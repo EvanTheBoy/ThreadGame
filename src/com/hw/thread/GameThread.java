@@ -23,13 +23,14 @@ public class GameThread implements Runnable {
     private Listener listener;
     private Random rand;
 
-    public Vector<FlyObject> enemies, attackers;
+    public Vector<FlyObject> enemies, attackers, demons;
     public GameThread(Graphics g, JFrame jf) {
         this.g = g;
         this.jf = jf;
         rand = new Random();
         enemies = new Vector<>();
         attackers = new Vector<>();
+        demons = new Vector<>();
         MyVector location = new MyVector(70, 384);
         MyVector velocity = new MyVector(0, 0);
         MyVector accelerator = new MyVector(0, 0);
@@ -52,18 +53,26 @@ public class GameThread implements Runnable {
             //不停地画
             enemies.add(zombie);
         }
+        if (count >= 300 && count % 80 == 0) {
+            int ly = rand.nextInt(502) + 103;
+            int vx = -rand.nextInt(1) - 3;
+            MyVector loc = new MyVector(1024, ly);
+            MyVector vel = new MyVector(vx, 0);
+            MyVector acc = new MyVector(0, 0);
+            FlyObject demon = new FlyObject(loc, vel, acc, "bullet_monster.png", 10);
+            demons.add(demon);
+        }
     }
 
-    //生成僵尸发射的子弹
+    //生成恶魔发射的子弹
     private void generateBullets() {
-        for (FlyObject monster : enemies) {
+        for (FlyObject monster : demons) {
             //然后获取僵尸的位置
             int mx = monster.location.x;
             int my = monster.location.y;
-            if (mx % 128 == 0) {
-                System.out.println("僵尸现在的位置是:" + mx);
+            if (mx % 67 == 0) {
                 MyVector loc = new MyVector(mx - 60, my);
-                MyVector vel = new MyVector(-3, 0);
+                MyVector vel = new MyVector(-5, 0);
                 MyVector acc = new MyVector(0, 0);
                 //创建僵尸发射的子弹对象
                 FlyObject attacker = new FlyObject(loc, vel, acc, "zombie_bullet.png");
@@ -86,16 +95,21 @@ public class GameThread implements Runnable {
             bufG.drawImage(backgroundImage.getImage(), 0, 0, null);
             //计时器自增，用来后续随机生成僵尸等
             ++count;
+            System.out.println("count = " + count);
             //把我方飞机画出来
             plane.drawObject(bufG);
             plane.move();
-            //生成僵尸
+            //生成僵尸与恶魔
             generateZombies();
             for (FlyObject f : enemies) {
                 f.drawObject(bufG);
                 f.move();
             }
-            //僵尸发射子弹
+            for (FlyObject f : demons) {
+                f.drawObject(bufG);
+                f.move();
+            }
+            //恶魔发射子弹
             for (FlyObject b : attackers) {
                 b.drawObject(bufG);
                 b.move();
