@@ -1,7 +1,6 @@
 package com.hw.frame;
 
 import com.hw.thread.GameThread;
-import com.hw.thread.ZombieBulletThread;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,14 +21,10 @@ public class GameUI {
         jf.setVisible(true);
         this.g = jf.getGraphics();
         GameThread gt = new GameThread(g, jf);
-        ZombieBulletThread zbt = new ZombieBulletThread();
-//        gt.enemies = zbt.enemies;
-//        gt.attackers = zbt.attackers;
         //优化:使用线程池来管理
         ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 10, 10,
                 TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(10));
         pool.execute(gt);
-        pool.execute(zbt);
     }
 
     public static void main(String[] args) {

@@ -56,11 +56,12 @@ public class GameThread implements Runnable {
 
     //生成僵尸发射的子弹
     private void generateBullets() {
-        if (count % 140 == 0) {
-            for (FlyObject monster : enemies) {
-                //然后获取僵尸的位置
-                int mx = monster.location.x;
-                int my = monster.location.y;
+        for (FlyObject monster : enemies) {
+            //然后获取僵尸的位置
+            int mx = monster.location.x;
+            int my = monster.location.y;
+            if (mx % 128 == 0) {
+                System.out.println("僵尸现在的位置是:" + mx);
                 MyVector loc = new MyVector(mx - 60, my);
                 MyVector vel = new MyVector(-3, 0);
                 MyVector acc = new MyVector(0, 0);
