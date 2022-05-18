@@ -26,19 +26,19 @@ public class EnemyThread implements Runnable {
             MyVector loc = new MyVector(1024, ly);
             MyVector vel = new MyVector(vx, 0);
             MyVector acc = new MyVector(0, 0);
-            FlyObject zombie = new FlyObject(loc, vel, acc, "balloon_zombie.png", 5);
+            FlyObject zombie = new FlyObject(loc, vel, acc, "balloon_zombie.png", 6);
             //这里之所以要用到队列，是因为僵尸画出来后要一直停留在页面上，也就是不停地画
             //所以在这里就体现为，每创建出一个僵尸对象，就把它添加进队列中，然后从队列中取出来
             //不停地画
             enemies.add(zombie);
         }
-        if (count >= 300 && count % 80 == 0) {
+        if (count >= 300 && count % 90 == 0) {
             int ly = rand.nextInt(502) + 103;
             int vx = -rand.nextInt(1) - 3;
             MyVector loc = new MyVector(1024, ly);
             MyVector vel = new MyVector(vx, 0);
             MyVector acc = new MyVector(0, 0);
-            FlyObject demon = new FlyObject(loc, vel, acc, "bullet_monster.png", 10);
+            FlyObject demon = new FlyObject(loc, vel, acc, "bullet_monster.png", 12);
             demons.add(demon);
         }
     }

@@ -31,6 +31,35 @@ public class GameThread implements Runnable {
         listener = new Listener(plane);
     }
 
+    //判断爆炸
+    private void explode(FlyObject object) {
+        if (object.imgName.equals(fileAddress + "balloon_zombie")) {
+            //现在是获取僵尸位置
+            int zx = object.location.x;
+            int zy = object.location.y;
+            
+        }
+    }
+
+    //判断我方子弹是否打中僵尸
+    private void judgeAttack() {
+        for (int i = 0; i < enemies.size(); ++i) {
+            FlyObject zombie = enemies.get(i);
+            //现在获取僵尸的位置
+            int zx = zombie.location.x;
+            int zy = zombie.location.y;
+            for (int j = 0; j < plane.bullets.size(); ++i) {
+                FlyObject myBullet = plane.bullets.get(j);
+                //首先记录子弹的位置
+                int bx = myBullet.location.x;
+                int by = myBullet.location.y;
+                //算出子弹与僵尸的位置差
+                int distance = (int)Math.sqrt(Math.pow((zx - bx), 2) + Math.pow((zy - by), 2));
+
+            }
+        }
+    }
+
     @Override
     public void run() {
         //获取缓冲区画笔对象
