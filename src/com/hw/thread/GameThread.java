@@ -41,7 +41,7 @@ public class GameThread implements Runnable {
             int zx = object.location.x;
             int zy = object.location.y;
             loc = new MyVector(zx, zy);
-            explosion = new FlyObject(loc, null, null, "zombie_boom.png", 5);
+            explosion = new FlyObject(loc, null, null, "zombie_explosion1.png", 5);
             z_explosions.add(explosion);
         }
         if (object.imgName.equals(fileAddress + "bullet_monster")) {
@@ -68,7 +68,13 @@ public class GameThread implements Runnable {
             FlyObject explosion = z_explosions.get(i);
             explosion.drawObject(g);
             --explosion.hp;
-            if (explosion.img.equals(fileAddress + ""));
+            if (explosion.img.equals(fileAddress + "zombie_explosion1.png")) {
+                ImageIcon imageIcon = new ImageIcon(fileAddress + "zombie_explosion" + (explosion.hp%11 + 1) + ".png");
+                explosion.img = imageIcon.getImage();
+            }
+            if (explosion.hp == 0) {
+                z_explosions.remove(i);
+            }
         }
     }
 
@@ -138,6 +144,10 @@ public class GameThread implements Runnable {
                 bullet.drawObject(bufG);
                 bullet.move();
             }
+            //判断是否发生碰撞
+            judgeAttack();
+            //绘制爆炸效果
+            drawZombieExplosion(bufG);
             //最后记得要把这个也画出来
             g.drawImage(bufferedImage, 0, 0, null);
             try {
