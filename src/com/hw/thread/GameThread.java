@@ -68,7 +68,7 @@ public class GameThread implements Runnable {
             FlyObject explosion = z_explosions.get(i);
             explosion.drawObject(g);
             --explosion.hp;
-            if (explosion.img.equals(fileAddress + "zombie_explosion1.png")) {
+            if (explosion.imgName.equals(fileAddress + "zombie_explosion1.png")) {
                 ImageIcon imageIcon = new ImageIcon(fileAddress + "zombie_explosion" + (explosion.hp%11 + 1) + ".png");
                 explosion.img = imageIcon.getImage();
             }
@@ -85,14 +85,14 @@ public class GameThread implements Runnable {
             //现在获取僵尸的位置
             int zx = zombie.location.x;
             int zy = zombie.location.y;
-            for (int j = 0; j < plane.bullets.size(); ++i) {
+            for (int j = 0; j < plane.bullets.size(); ++j) {
                 FlyObject myBullet = plane.bullets.get(j);
                 //首先记录子弹的位置
                 int bx = myBullet.location.x;
                 int by = myBullet.location.y;
                 //算出子弹与僵尸的位置差
                 int distance = (int)Math.sqrt(Math.pow((zx - bx), 2) + Math.pow((zy - by), 2));
-                if (distance <= 10) {
+                if (distance <= 30) {
                     //僵尸的血量减少
                     zombie.hp -= myBullet.hp;
                     if (zombie.hp <= 0) {
