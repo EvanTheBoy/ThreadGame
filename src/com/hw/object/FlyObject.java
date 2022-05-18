@@ -30,7 +30,6 @@ public class FlyObject {
         hm.put(imgAddress + "demon_boom.png", new MyVector(0, 0));
         hm.put(imgAddress + "zombie_bullet.png", new MyVector(0, 0));
         hm.put(imgAddress + "bullet_monster.png", new MyVector(50, 50));
-        hm.put(imgAddress + "zombie_boom.png", new MyVector(0, 0));
         hm.put(imgAddress + "bullet_boom.png", new MyVector(0, 0));
     }
 

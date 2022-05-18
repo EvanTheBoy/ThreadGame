@@ -19,11 +19,11 @@ public class GameThread implements Runnable {
     private ImageIcon backgroundImage; //游戏背景
     public static String fileAddress = "img/"; //图片的存储根目录
     private Listener listener;
-    public Vector<FlyObject> enemies, attackers, demons, explosions;
+    public Vector<FlyObject> enemies, attackers, demons, z_explosions, d_explosions, b_explosions;
     public GameThread(Graphics g, JFrame jf) {
         this.g = g;
         this.jf = jf;
-        explosions = new Vector<>();
+        z_explosions = new Vector<>();
         MyVector location = new MyVector(70, 384);
         MyVector velocity = new MyVector(0, 0);
         MyVector accelerator = new MyVector(0, 0);
@@ -41,24 +41,34 @@ public class GameThread implements Runnable {
             int zx = object.location.x;
             int zy = object.location.y;
             loc = new MyVector(zx, zy);
-            explosion = new FlyObject(loc, null, null, "zombie_boom.png");
-            explosions.add(explosion);
+            explosion = new FlyObject(loc, null, null, "zombie_boom.png", 5);
+            z_explosions.add(explosion);
         }
         if (object.imgName.equals(fileAddress + "bullet_monster")) {
             //获取恶魔的位置
             int dx = object.location.x;
             int dy = object.location.y;
             loc = new MyVector(dx, dy);
-            explosion = new FlyObject(loc, null, null, "demon_boom.png");
-            explosions.add(explosion);
+            explosion = new FlyObject(loc, null, null, "demon_boom.png", 10);
+            d_explosions.add(explosion);
         }
         if (object.imgName.equals(fileAddress + "zombie_bullet.png")) {
             //获取恶魔发射的子弹位置
             int zbx = object.location.x;
             int zby = object.location.y;
             loc = new MyVector(zbx, zby);
-            explosion = new FlyObject(loc, null, null, "bullet_boom.png");
-            explosions.add(explosion);
+            explosion = new FlyObject(loc, null, null, "bullet_boom.png", 3);
+            b_explosions.add(explosion);
+        }
+    }
+
+    //绘制爆炸的效果
+    private void drawZombieExplosion(Graphics g) {
+        for (int i = 0; i < z_explosions.size(); ++i) {
+            FlyObject explosion = z_explosions.get(i);
+            explosion.drawObject(g);
+            --explosion.hp;
+            if (explosion.img.equals(fileAddress + ""));
         }
     }
 
