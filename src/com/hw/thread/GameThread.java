@@ -19,10 +19,11 @@ public class GameThread implements Runnable {
     private ImageIcon backgroundImage; //游戏背景
     public static String fileAddress = "img/"; //图片的存储根目录
     private Listener listener;
-    public Vector<FlyObject> enemies, attackers, demons;
+    public Vector<FlyObject> enemies, attackers, demons, explosions;
     public GameThread(Graphics g, JFrame jf) {
         this.g = g;
         this.jf = jf;
+        explosions = new Vector<>();
         MyVector location = new MyVector(70, 384);
         MyVector velocity = new MyVector(0, 0);
         MyVector accelerator = new MyVector(0, 0);
@@ -33,11 +34,31 @@ public class GameThread implements Runnable {
 
     //判断爆炸
     private void explode(FlyObject object) {
+        FlyObject explosion;
+        MyVector loc;
         if (object.imgName.equals(fileAddress + "balloon_zombie")) {
             //现在是获取僵尸位置
             int zx = object.location.x;
             int zy = object.location.y;
-            
+            loc = new MyVector(zx, zy);
+            explosion = new FlyObject(loc, null, null, "zombie_boom.png");
+            explosions.add(explosion);
+        }
+        if (object.imgName.equals(fileAddress + "bullet_monster")) {
+            //获取恶魔的位置
+            int dx = object.location.x;
+            int dy = object.location.y;
+            loc = new MyVector(dx, dy);
+            explosion = new FlyObject(loc, null, null, "demon_boom.png");
+            explosions.add(explosion);
+        }
+        if (object.imgName.equals(fileAddress + "zombie_bullet.png")) {
+            //获取恶魔发射的子弹位置
+            int zbx = object.location.x;
+            int zby = object.location.y;
+            loc = new MyVector(zbx, zby);
+            explosion = new FlyObject(loc, null, null, "bullet_boom.png");
+            explosions.add(explosion);
         }
     }
 
@@ -55,7 +76,16 @@ public class GameThread implements Runnable {
                 int by = myBullet.location.y;
                 //算出子弹与僵尸的位置差
                 int distance = (int)Math.sqrt(Math.pow((zx - bx), 2) + Math.pow((zy - by), 2));
-
+                if (distance <= 10) {
+                    //僵尸的血量减少
+                    zombie.hp -= myBullet.hp;
+                    if (zombie.hp <= 0) {
+                        //添加爆炸特效
+                        explode(zombie);
+                        zombie.img = null;
+                        zombie.location = new MyVector(-1100, 0);
+                    }
+                }
             }
         }
     }
