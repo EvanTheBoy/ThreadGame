@@ -78,8 +78,9 @@ public class GameThread implements Runnable {
         }
     }
 
-    //判断我方子弹是否打中僵尸
+    //判断我方子弹是否打中敌人
     private void judgeAttack() {
+        //判断是否打中僵尸
         for (int i = 0; i < enemies.size(); ++i) {
             FlyObject zombie = enemies.get(i);
             //现在获取僵尸的位置
@@ -100,6 +101,28 @@ public class GameThread implements Runnable {
                         explode(zombie);
                         zombie.img = null;
                         zombie.location = new MyVector(-1100, 0);
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < demons.size(); ++i) {
+            FlyObject demon = demons.get(i);
+            //获取恶魔的位置
+            int dx = demon.location.x;
+            int dy = demon.location.y;
+            for (int j = 0; j < plane.bullets.size(); ++j) {
+                FlyObject myBullet = plane.bullets.get(j);
+                //记录子弹位置
+                int bx = myBullet.location.x;
+                int by = myBullet.location.y;
+                //算出自担与恶魔的位置差
+                int distance = (int) Math.sqrt(Math.pow((dx - bx), 2) + Math.pow((dy - by), 2));
+                if (distance <= 40) {
+                    demon.hp -= myBullet.hp;
+                    if (demon.hp <= 0) {
+                        explode(demon);
+                        demon.img = null;
+                        demon.location = new MyVector(-1100, 0);
                     }
                 }
             }

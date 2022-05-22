@@ -26,7 +26,7 @@ public class EnemyThread implements Runnable {
             MyVector loc = new MyVector(1024, ly);
             MyVector vel = new MyVector(vx, 0);
             MyVector acc = new MyVector(0, 0);
-            FlyObject zombie = new FlyObject(loc, vel, acc, "balloon_zombie.png", 9);
+            FlyObject zombie = new FlyObject(loc, vel, acc, "balloon_zombie.png", 15);
             //这里之所以要用到队列，是因为僵尸画出来后要一直停留在页面上，也就是不停地画
             //所以在这里就体现为，每创建出一个僵尸对象，就把它添加进队列中，然后从队列中取出来
             //不停地画
@@ -38,7 +38,7 @@ public class EnemyThread implements Runnable {
             MyVector loc = new MyVector(1024, ly);
             MyVector vel = new MyVector(vx, 0);
             MyVector acc = new MyVector(0, 0);
-            FlyObject demon = new FlyObject(loc, vel, acc, "bullet_monster.png", 12);
+            FlyObject demon = new FlyObject(loc, vel, acc, "bullet_monster.png", 24);
             demons.add(demon);
         }
     }
