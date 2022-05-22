@@ -3,6 +3,7 @@ package com.hw.thread;
 import com.hw.listener.Listener;
 import com.hw.object.FlyObject;
 import com.hw.object.Plane;
+import com.hw.object.ZombieExplosion;
 import com.hw.parameter.MyVector;
 
 import javax.swing.*;
@@ -19,7 +20,8 @@ public class GameThread implements Runnable {
     private ImageIcon backgroundImage; //游戏背景
     public static String fileAddress = "img/"; //图片的存储根目录
     private Listener listener;
-    public Vector<FlyObject> enemies, attackers, demons, z_explosions, d_explosions, b_explosions;
+    public Vector<FlyObject> enemies, attackers, demons;
+    public Vector<ZombieExplosion> z_explosions;
     public GameThread(Graphics g, JFrame jf) {
         this.g = g;
         this.jf = jf;
@@ -40,9 +42,8 @@ public class GameThread implements Runnable {
             //现在是获取僵尸位置
             int zx = object.location.x;
             int zy = object.location.y;
-            loc = new MyVector(zx, zy);
-            explosion = new FlyObject(loc, null, null, "zombie_explosion1.png", 5);
-            z_explosions.add(explosion);
+            ZombieExplosion ze = new ZombieExplosion(zx, zy);
+            z_explosions.add(ze);
         }
         if (object.imgName.equals(fileAddress + "bullet_monster")) {
             //获取恶魔的位置
@@ -50,7 +51,7 @@ public class GameThread implements Runnable {
             int dy = object.location.y;
             loc = new MyVector(dx, dy);
             explosion = new FlyObject(loc, null, null, "demon_boom.png", 10);
-            d_explosions.add(explosion);
+//            d_explosions.add(explosion);
         }
         if (object.imgName.equals(fileAddress + "zombie_bullet.png")) {
             //获取恶魔发射的子弹位置
@@ -58,23 +59,16 @@ public class GameThread implements Runnable {
             int zby = object.location.y;
             loc = new MyVector(zbx, zby);
             explosion = new FlyObject(loc, null, null, "bullet_boom.png", 3);
-            b_explosions.add(explosion);
+//            b_explosions.add(explosion);
         }
     }
 
     //绘制爆炸的效果
     private void drawZombieExplosion(Graphics g) {
         for (int i = 0; i < z_explosions.size(); ++i) {
-            FlyObject explosion = z_explosions.get(i);
-            explosion.drawObject(g);
-            --explosion.hp;
-            if (explosion.imgName.equals(fileAddress + "zombie_explosion1.png")) {
-                ImageIcon imageIcon = new ImageIcon(fileAddress + "zombie_explosion" + (explosion.hp%11 + 1) + ".png");
-                explosion.img = imageIcon.getImage();
-            }
-            if (explosion.hp == 0) {
-                z_explosions.remove(i);
-            }
+            ZombieExplosion explosion = z_explosions.get(i);
+            System.out.println("开始绘制!");
+            explosion.drawExplosion(g);
         }
     }
 
@@ -143,7 +137,6 @@ public class GameThread implements Runnable {
             bufG.drawImage(backgroundImage.getImage(), 0, 0, null);
             //计时器自增，用来后续随机生成僵尸等
             ++count;
-            System.out.println("count = " + count);
             //把我方飞机画出来
             plane.drawObject(bufG);
             plane.move();
