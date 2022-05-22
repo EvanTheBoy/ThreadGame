@@ -13,7 +13,7 @@ import java.util.Vector;
 
 public class GameThread implements Runnable {
     public Graphics g;
-    private int count = 0;
+    private int count = 0, backgroundX = 0;
     private Plane plane;
     private JFrame jf;
     private boolean gameRest; //判断游戏是否暂停
@@ -21,11 +21,11 @@ public class GameThread implements Runnable {
     public static String fileAddress = "img/"; //图片的存储根目录
     private Listener listener;
     public Vector<FlyObject> enemies, attackers, demons;
-    public Vector<ZombieExplosion> z_explosions;
+//    public Vector<ZombieExplosion> z_explosions;
     public GameThread(Graphics g, JFrame jf) {
         this.g = g;
         this.jf = jf;
-        z_explosions = new Vector<>();
+//        z_explosions = new Vector<>();
         MyVector location = new MyVector(70, 384);
         MyVector velocity = new MyVector(0, 0);
         MyVector accelerator = new MyVector(0, 0);
@@ -63,15 +63,15 @@ public class GameThread implements Runnable {
         }
     }
 
-    //绘制爆炸的效果
-    private void drawZombieExplosion(Graphics g) {
-        for (int i = 0; i < z_explosions.size(); ++i) {
-            ZombieExplosion explosion = z_explosions.get(i);
-            System.out.println("开始绘制!");
-            explosion.drawExplosion(g);
-            System.out.println("绘制完毕!");
-        }
-    }
+//    //绘制爆炸的效果
+//    private void drawZombieExplosion(Graphics g) {
+//        for (int i = 0; i < z_explosions.size(); ++i) {
+//            ZombieExplosion explosion = z_explosions.get(i);
+//            System.out.println("开始绘制!");
+//            explosion.drawExplosion(g);
+//            System.out.println("绘制完毕!");
+//        }
+//    }
 
     //判断我方子弹是否打中敌人
     private void judgeAttack(Graphics g) {
@@ -137,7 +137,12 @@ public class GameThread implements Runnable {
         while (true) {
             //获取游戏背景图
             backgroundImage = new ImageIcon(fileAddress + "background.jpg");
-            bufG.drawImage(backgroundImage.getImage(), 0, 0, null);
+            bufG.drawImage(backgroundImage.getImage(), backgroundX, 0, null);
+            bufG.drawImage(backgroundImage.getImage(), backgroundX - backgroundImage.getIconWidth(), 0, null);
+            if (backgroundX >= backgroundImage.getIconWidth()) {
+                backgroundX = 0;
+            }
+            ++backgroundX;
             //计时器自增，用来后续随机生成僵尸等
             ++count;
 //            ze.drawExplosion(bufG);
@@ -167,7 +172,7 @@ public class GameThread implements Runnable {
             //判断是否发生碰撞
             judgeAttack(bufG);
             //绘制爆炸效果
-            drawZombieExplosion(bufG);
+//            drawZombieExplosion(bufG);
             //最后记得要把这个也画出来
             g.drawImage(bufferedImage, 0, 0, null);
             try {
