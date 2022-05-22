@@ -5,6 +5,7 @@ import java.awt.*;
 
 public class ZombieExplosion {
     private ImageIcon[] image;
+    private String fileAddress = "explosion_image/";
     private int index = 0;
     public int x, y;
     public ZombieExplosion(int x, int y) {
@@ -14,8 +15,8 @@ public class ZombieExplosion {
     }
 
     private void loadPictures() {
-        for (int i = 1; i < image.length + 1; ++i) {
-            image[i] = new ImageIcon("zombie_explosion" + i + ".png");
+        for (int i = 0; i < image.length; ++i) {
+            image[i] = new ImageIcon(fileAddress + "zombie_explosion" + i + ".png");
         }
     }
 
@@ -25,6 +26,7 @@ public class ZombieExplosion {
         if (index <= 11) {
             g.drawImage(image[index].getImage(), x, y, null);
             ++index;
+            System.out.println("index = " + index);
         }
     }
 }

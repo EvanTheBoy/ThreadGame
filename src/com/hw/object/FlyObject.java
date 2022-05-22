@@ -31,6 +31,7 @@ public class FlyObject {
         hm.put(imgAddress + "zombie_bullet.png", new MyVector(0, 0));
         hm.put(imgAddress + "bullet_monster.png", new MyVector(50, 50));
         hm.put(imgAddress + "bullet_boom.png", new MyVector(0, 0));
+        hm.put(imgAddress + "zombie_explosion0.png", new MyVector(0, 0));
         hm.put(imgAddress + "zombie_explosion1.png", new MyVector(0, 0));
         hm.put(imgAddress + "zombie_explosion2.png", new MyVector(0, 0));
         hm.put(imgAddress + "zombie_explosion3.png", new MyVector(0, 0));
@@ -41,7 +42,6 @@ public class FlyObject {
         hm.put(imgAddress + "zombie_explosion8.png", new MyVector(0, 0));
         hm.put(imgAddress + "zombie_explosion9.png", new MyVector(0, 0));
         hm.put(imgAddress + "zombie_explosion10.png", new MyVector(0, 0));
-        hm.put(imgAddress + "zombie_explosion11.png", new MyVector(0, 0));
     }
 
     //这里是只有位置、速度和加速度的物体

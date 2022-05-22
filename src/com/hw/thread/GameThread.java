@@ -69,6 +69,7 @@ public class GameThread implements Runnable {
             ZombieExplosion explosion = z_explosions.get(i);
             System.out.println("开始绘制!");
             explosion.drawExplosion(g);
+            System.out.println("绘制完毕!");
         }
     }
 
@@ -99,6 +100,7 @@ public class GameThread implements Runnable {
                 }
             }
         }
+        //判断是否打中恶魔
         for (int i = 0; i < demons.size(); ++i) {
             FlyObject demon = demons.get(i);
             //获取恶魔的位置
