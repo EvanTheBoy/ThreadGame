@@ -41,7 +41,7 @@ public class Plane extends FlyObject {
         MyVector loc = new MyVector(originX, originY);
         MyVector vel = new MyVector(7, 0);
         MyVector acc = new MyVector(0, 0);
-        FlyObject bullet = new FlyObject(loc, vel, acc, "bullet.png", 3);
+        FlyObject bullet = new FlyObject(loc, vel, acc, "bullet.png", 1);
         bullets.add(bullet);
     }
 }
