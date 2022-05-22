@@ -35,30 +35,30 @@ public class GameThread implements Runnable {
     }
 
     //判断爆炸
-    private void explode(FlyObject object) {
-        FlyObject explosion;
-        MyVector loc;
-        if (object.imgName.equals(fileAddress + "balloon_zombie")) {
+    private void explode(FlyObject object, Graphics g) {
+        if (object.imgName.equals(fileAddress + "balloon_zombie.png")) {
             //现在是获取僵尸位置
+            System.out.println("获取到僵尸的位置了!");
             int zx = object.location.x;
             int zy = object.location.y;
             ZombieExplosion ze = new ZombieExplosion(zx, zy);
-            z_explosions.add(ze);
+            System.out.println("你他妈倒是画啊!");
+            ze.drawExplosion(g);
         }
-        if (object.imgName.equals(fileAddress + "bullet_monster")) {
+        if (object.imgName.equals(fileAddress + "bullet_monster.png")) {
             //获取恶魔的位置
             int dx = object.location.x;
             int dy = object.location.y;
-            loc = new MyVector(dx, dy);
-            explosion = new FlyObject(loc, null, null, "demon_boom.png", 10);
+//            loc = new MyVector(dx, dy);
+//            explosion = new FlyObject(loc, null, null, "demon_boom.png", 10);
 //            d_explosions.add(explosion);
         }
         if (object.imgName.equals(fileAddress + "zombie_bullet.png")) {
             //获取恶魔发射的子弹位置
             int zbx = object.location.x;
             int zby = object.location.y;
-            loc = new MyVector(zbx, zby);
-            explosion = new FlyObject(loc, null, null, "bullet_boom.png", 3);
+//            loc = new MyVector(zbx, zby);
+//            explosion = new FlyObject(loc, null, null, "bullet_boom.png", 3);
 //            b_explosions.add(explosion);
         }
     }
@@ -74,7 +74,7 @@ public class GameThread implements Runnable {
     }
 
     //判断我方子弹是否打中敌人
-    private void judgeAttack() {
+    private void judgeAttack(Graphics g) {
         //判断是否打中僵尸
         for (int i = 0; i < enemies.size(); ++i) {
             FlyObject zombie = enemies.get(i);
@@ -93,7 +93,7 @@ public class GameThread implements Runnable {
                     zombie.hp -= myBullet.hp;
                     if (zombie.hp <= 0) {
                         //添加爆炸特效
-                        explode(zombie);
+                        explode(zombie, g);
                         zombie.img = null;
                         zombie.location = new MyVector(-1100, 0);
                     }
@@ -116,7 +116,7 @@ public class GameThread implements Runnable {
                 if (distance <= 40) {
                     demon.hp -= myBullet.hp;
                     if (demon.hp <= 0) {
-                        explode(demon);
+                        explode(demon, g);
                         demon.img = null;
                         demon.location = new MyVector(-1100, 0);
                     }
@@ -133,12 +133,14 @@ public class GameThread implements Runnable {
         Graphics bufG = bufferedImage.getGraphics();
         //为界面添加键盘监听器
         jf.addKeyListener(listener);
+//        ZombieExplosion ze = new ZombieExplosion(200, 200);
         while (true) {
             //获取游戏背景图
             backgroundImage = new ImageIcon(fileAddress + "background.jpg");
             bufG.drawImage(backgroundImage.getImage(), 0, 0, null);
             //计时器自增，用来后续随机生成僵尸等
             ++count;
+//            ze.drawExplosion(bufG);
             //把我方飞机画出来
             plane.drawObject(bufG);
             plane.move();
@@ -163,7 +165,7 @@ public class GameThread implements Runnable {
                 bullet.move();
             }
             //判断是否发生碰撞
-            judgeAttack();
+            judgeAttack(bufG);
             //绘制爆炸效果
             drawZombieExplosion(bufG);
             //最后记得要把这个也画出来
