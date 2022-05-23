@@ -3,7 +3,7 @@ package com.hw.thread;
 import com.hw.listener.Listener;
 import com.hw.object.FlyObject;
 import com.hw.object.Plane;
-import com.hw.object.ZombieExplosion;
+import com.hw.object.DrawExplosion;
 import com.hw.parameter.MyVector;
 
 import javax.swing.*;
@@ -36,22 +36,21 @@ public class GameThread implements Runnable {
 
     //判断爆炸
     private void explode(FlyObject object, Graphics g) {
+        DrawExplosion ze;
         if (object.imgName.equals(fileAddress + "balloon_zombie.png")) {
             //现在是获取僵尸位置
             System.out.println("获取到僵尸的位置了!");
             int zx = object.location.x;
             int zy = object.location.y;
-            ZombieExplosion ze = new ZombieExplosion(zx, zy);
-            System.out.println("你他妈倒是画啊!");
-            ze.drawExplosion(g);
+            ze = new DrawExplosion(zx, zy);
+            ze.drawZombieExplosion(g);
         }
         if (object.imgName.equals(fileAddress + "bullet_monster.png")) {
             //获取恶魔的位置
             int dx = object.location.x;
             int dy = object.location.y;
-//            loc = new MyVector(dx, dy);
-//            explosion = new FlyObject(loc, null, null, "demon_boom.png", 10);
-//            d_explosions.add(explosion);
+            ze = new DrawExplosion(dx, dy);
+            ze.drawDemonExplosion(g);
         }
         if (object.imgName.equals(fileAddress + "zombie_bullet.png")) {
             //获取恶魔发射的子弹位置
