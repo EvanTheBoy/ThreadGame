@@ -2,14 +2,14 @@ package com.hw.object;
 
 import com.hw.parameter.MyVector;
 
-import java.util.ArrayList;
+import java.util.Vector;
 
 
 public class Plane extends FlyObject {
-    public ArrayList<FlyObject> bullets;
+    public Vector<FlyObject> bullets;
     public Plane(MyVector location, MyVector velocity, MyVector accelerator, String imgName) {
         super(location, velocity, accelerator, imgName);
-        bullets = new ArrayList<>();
+        bullets = new Vector<>();
     }
 
     public void setVelocity(int x, int y) {

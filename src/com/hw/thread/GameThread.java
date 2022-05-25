@@ -13,7 +13,7 @@ import java.util.Vector;
 
 public class GameThread implements Runnable {
     public Graphics g;
-    private int count = 0, backgroundX = 0;
+    private int backgroundX = 0;
     private Plane plane;
     private JFrame jf;
     private boolean gameRest; //判断游戏是否暂停
@@ -32,7 +32,7 @@ public class GameThread implements Runnable {
         listener = new Listener(plane);
     }
 
-    //判断爆炸
+    //添加爆炸
     private void explode(FlyObject object, Graphics g) {
         DrawExplosion ze;
         if (object.imgName.equals(fileAddress + "balloon_zombie.png")) {
@@ -41,19 +41,39 @@ public class GameThread implements Runnable {
             int zx = object.location.x;
             int zy = object.location.y;
             ze = new DrawExplosion(zx, zy);
-            ze.drawZombieExplosion(g);
+            for (; ;) {
+                if (ze.index < 11) {
+                    ze.drawZombieExplosion(g);
+                } else {
+                    break;
+                }
+            }
         }
         if (object.imgName.equals(fileAddress + "bullet_monster.png")) {
             //获取恶魔的位置
             int dx = object.location.x;
             int dy = object.location.y;
             ze = new DrawExplosion(dx, dy);
-            ze.drawDemonExplosion(g);
+            for (; ;) {
+                if (ze.index < 14) {
+                    ze.drawDemonExplosion(g);
+                } else {
+                    break;
+                }
+            }
         }
         if (object.imgName.equals(fileAddress + "zombie_bullet.png")) {
             //获取恶魔发射的子弹位置
             int zbx = object.location.x;
             int zby = object.location.y;
+            ze = new DrawExplosion(zbx, zby);
+            for (; ;) {
+                if (ze.index < 6) {
+                    ze.drawBulletExplosion(g);
+                } else {
+                    break;
+                }
+            }
         }
     }
 
@@ -95,7 +115,7 @@ public class GameThread implements Runnable {
                 //记录子弹位置
                 int bx = myBullet.location.x;
                 int by = myBullet.location.y;
-                //算出自担与恶魔的位置差
+                //算出子弹与恶魔的位置差
                 int distance = (int) Math.sqrt(Math.pow((dx - bx), 2) + Math.pow((dy - by), 2));
                 if (distance <= 40) {
                     demon.hp -= myBullet.hp;
@@ -103,6 +123,29 @@ public class GameThread implements Runnable {
                         explode(demon, g);
                         demon.img = null;
                         demon.location = new MyVector(-1100, 0);
+                    }
+                }
+            }
+        }
+        //判断是否打中子弹
+        for (int i = 0; i < attackers.size(); ++i) {
+            FlyObject bullet = attackers.get(i);
+            //获取子弹的位置
+            int zbx = bullet.location.x;
+            int zby = bullet.location.y;
+            for (int j = 0; j < plane.bullets.size(); ++j) {
+                FlyObject myBullet = plane.bullets.get(j);
+                //记录子弹位置
+                int bx = myBullet.location.x;
+                int by = myBullet.location.y;
+                //算出子弹与恶魔的位置差
+                int distance = (int) Math.sqrt(Math.pow((zbx - bx), 2) + Math.pow((zby - by), 2));
+                if (distance <= 20) {
+                    bullet.hp -= myBullet.hp;
+                    if (bullet.hp <= 0) {
+                        explode(bullet, g);
+                        bullet.img = null;
+                        bullet.location = new MyVector(-1100, 0);
                     }
                 }
             }
@@ -127,7 +170,6 @@ public class GameThread implements Runnable {
             }
             ++backgroundX;
             //计时器自增，用来后续随机生成僵尸等
-            ++count;
             //把我方飞机画出来
             plane.drawObject(bufG);
             plane.move();
