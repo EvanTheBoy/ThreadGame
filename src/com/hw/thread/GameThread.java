@@ -21,11 +21,9 @@ public class GameThread implements Runnable {
     public static String fileAddress = "img/"; //图片的存储根目录
     private Listener listener;
     public Vector<FlyObject> enemies, attackers, demons;
-//    public Vector<ZombieExplosion> z_explosions;
     public GameThread(Graphics g, JFrame jf) {
         this.g = g;
         this.jf = jf;
-//        z_explosions = new Vector<>();
         MyVector location = new MyVector(70, 384);
         MyVector velocity = new MyVector(0, 0);
         MyVector accelerator = new MyVector(0, 0);
@@ -56,21 +54,8 @@ public class GameThread implements Runnable {
             //获取恶魔发射的子弹位置
             int zbx = object.location.x;
             int zby = object.location.y;
-//            loc = new MyVector(zbx, zby);
-//            explosion = new FlyObject(loc, null, null, "bullet_boom.png", 3);
-//            b_explosions.add(explosion);
         }
     }
-
-//    //绘制爆炸的效果
-//    private void drawZombieExplosion(Graphics g) {
-//        for (int i = 0; i < z_explosions.size(); ++i) {
-//            ZombieExplosion explosion = z_explosions.get(i);
-//            System.out.println("开始绘制!");
-//            explosion.drawExplosion(g);
-//            System.out.println("绘制完毕!");
-//        }
-//    }
 
     //判断我方子弹是否打中敌人
     private void judgeAttack(Graphics g) {
@@ -132,7 +117,6 @@ public class GameThread implements Runnable {
         Graphics bufG = bufferedImage.getGraphics();
         //为界面添加键盘监听器
         jf.addKeyListener(listener);
-//        ZombieExplosion ze = new ZombieExplosion(200, 200);
         while (true) {
             //获取游戏背景图
             backgroundImage = new ImageIcon(fileAddress + "background.jpg");
@@ -144,7 +128,6 @@ public class GameThread implements Runnable {
             ++backgroundX;
             //计时器自增，用来后续随机生成僵尸等
             ++count;
-//            ze.drawExplosion(bufG);
             //把我方飞机画出来
             plane.drawObject(bufG);
             plane.move();
@@ -170,8 +153,6 @@ public class GameThread implements Runnable {
             }
             //判断是否发生碰撞
             judgeAttack(bufG);
-            //绘制爆炸效果
-//            drawZombieExplosion(bufG);
             //最后记得要把这个也画出来
             g.drawImage(bufferedImage, 0, 0, null);
             try {
