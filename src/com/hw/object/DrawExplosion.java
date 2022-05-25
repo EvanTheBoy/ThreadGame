@@ -27,6 +27,7 @@ public class DrawExplosion {
         }
     }
 
+    //绘制僵尸的爆炸效果
     public void drawZombieExplosion(Graphics g) {
         try {
             Thread.sleep(5);
@@ -38,6 +39,7 @@ public class DrawExplosion {
         System.out.println("僵尸的index = " + index);
     }
 
+    //绘制恶魔的爆炸效果
     public void drawDemonExplosion(Graphics g) {
         try {
             Thread.sleep(5);
@@ -49,6 +51,7 @@ public class DrawExplosion {
         System.out.println("恶魔的index = " + index);
     }
 
+    //绘制子弹的爆炸效果
     public void drawBulletExplosion(Graphics g) {
         try {
             Thread.sleep(5);
