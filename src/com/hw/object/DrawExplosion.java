@@ -29,7 +29,7 @@ public class DrawExplosion {
 
     public void drawZombieExplosion(Graphics g) {
         try {
-            Thread.sleep(10);
+            Thread.sleep(5);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -40,7 +40,7 @@ public class DrawExplosion {
 
     public void drawDemonExplosion(Graphics g) {
         try {
-            Thread.sleep(10);
+            Thread.sleep(5);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -51,7 +51,7 @@ public class DrawExplosion {
 
     public void drawBulletExplosion(Graphics g) {
         try {
-            Thread.sleep(10);
+            Thread.sleep(5);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
