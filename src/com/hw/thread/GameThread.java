@@ -2,6 +2,7 @@ package com.hw.thread;
 
 import com.hw.listener.Listener;
 import com.hw.object.FlyObject;
+import com.hw.object.FreshScore;
 import com.hw.object.Plane;
 import com.hw.object.DrawExplosion;
 import com.hw.parameter.MyVector;
@@ -14,17 +15,19 @@ import java.util.Vector;
 public class GameThread implements Runnable {
     public Graphics g;
     private int backgroundX = 0;
-    private Plane plane;
+    private int score;
+    private final Plane plane;
     private JFrame jf;
     private boolean gameRest; //判断游戏是否暂停
-    private ImageIcon backgroundImage; //游戏背景
     public static String fileAddress = "img/"; //图片的存储根目录
     private Listener listener;
+    private FreshScore fs; //刷新游戏分数
 
     public Vector<FlyObject> enemies, attackers, demons;
     public GameThread(Graphics g, JFrame jf) {
         this.g = g;
         this.jf = jf;
+        score = 0;
         MyVector location = new MyVector(70, 384);
         MyVector velocity = new MyVector(0, 0);
         MyVector accelerator = new MyVector(0, 0);
@@ -78,6 +81,18 @@ public class GameThread implements Runnable {
         }
     }
 
+    //判断敌人是否打中我方
+    private void judgeAttackMe(Graphics g) {
+        //首先判断恶魔发射的子弹是否打中我
+        for (int i = 0; i < attackers.size(); ++i) {
+            FlyObject rebel = attackers.get(i);
+            int rx = rebel.location.x;
+            int ry = rebel.location.y;
+            fs = new FreshScore(rx, ry);
+
+        }
+    }
+
     //判断我方子弹是否打中敌人
     private void judgeAttack(Graphics g) {
         //判断是否打中僵尸
@@ -97,6 +112,7 @@ public class GameThread implements Runnable {
                     //僵尸的血量减少
                     zombie.hp -= myBullet.hp;
                     if (zombie.hp <= 0) {
+                        this.score += 5;
                         //添加爆炸特效
                         explode(zombie, g);
                         zombie.img = null;
@@ -121,6 +137,7 @@ public class GameThread implements Runnable {
                 if (distance <= 40) {
                     demon.hp -= myBullet.hp;
                     if (demon.hp <= 0) {
+                        this.score += 10;
                         explode(demon, g);
                         demon.img = null;
                         demon.location = new MyVector(-1100, 0);
@@ -153,11 +170,6 @@ public class GameThread implements Runnable {
         }
     }
 
-    //刷新分数
-    private void refreshScore() {
-
-    }
-
     @Override
     public void run() {
         //获取缓冲区画笔对象
@@ -168,7 +180,8 @@ public class GameThread implements Runnable {
         jf.addKeyListener(listener);
         while (true) {
             //获取游戏背景图
-            backgroundImage = new ImageIcon(fileAddress + "background.jpg");
+            //游戏背景
+            ImageIcon backgroundImage = new ImageIcon(fileAddress + "background.jpg");
             bufG.drawImage(backgroundImage.getImage(), backgroundX, 0, null);
             bufG.drawImage(backgroundImage.getImage(), backgroundX - backgroundImage.getIconWidth(), 0, null);
             if (backgroundX >= backgroundImage.getIconWidth()) {

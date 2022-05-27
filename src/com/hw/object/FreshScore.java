@@ -5,7 +5,10 @@ import java.awt.*;
 
 public class FreshScore {
     private final String fileAddress = "score_image/";
-    public FreshScore() {
+    public int x, y;
+    public FreshScore(int x, int y) {
+        this.x = x;
+        this.y = y;
         ImageIcon scoreIcon = new ImageIcon(fileAddress + "score.png");
         Image score = scoreIcon.getImage();
         ImageIcon num0 = new ImageIcon(fileAddress + "0.png");
@@ -28,5 +31,10 @@ public class FreshScore {
         Image n8 = num8.getImage();
         ImageIcon num9 = new ImageIcon(fileAddress + "9.png");
         Image n9 = num9.getImage();
+    }
+
+    //刷新游戏中得到的分数
+    public void refreshScore() {
+
     }
 }
