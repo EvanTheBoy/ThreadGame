@@ -152,6 +152,11 @@ public class GameThread implements Runnable {
         }
     }
 
+    //刷新分数
+    private void refreshScore() {
+
+    }
+
     @Override
     public void run() {
         //获取缓冲区画笔对象
