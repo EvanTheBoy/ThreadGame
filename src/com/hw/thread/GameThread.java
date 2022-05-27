@@ -174,24 +174,28 @@ public class GameThread implements Runnable {
             plane.drawObject(bufG);
             plane.move();
             //绘制气球僵尸
-            for (FlyObject f : enemies) {
+            for (int i = 0; i < enemies.size(); ++i) {
+                FlyObject f = enemies.get(i);
                 f.drawObject(bufG);
                 f.move();
             }
             //绘制恶魔
-            for (FlyObject f : demons) {
-                f.drawObject(bufG);
-                f.move();
+            for (int i = 0; i < demons.size(); ++i) {
+                FlyObject d = demons.get(i);
+                d.drawObject(bufG);
+                d.move();
             }
             //恶魔发射子弹
-            for (FlyObject b : attackers) {
-                b.drawObject(bufG);
-                b.move();
+            for (int i = 0; i < attackers.size(); ++i) {
+                FlyObject a = attackers.get(i);
+                a.drawObject(bufG);
+                a.move();
             }
             //生成我机攻击子弹
-            for (FlyObject bullet : plane.bullets) {
-                bullet.drawObject(bufG);
-                bullet.move();
+            for (int i = 0; i < plane.bullets.size(); ++i) {
+                FlyObject b = plane.bullets.get(i);
+                b.drawObject(bufG);
+                b.move();
             }
             //判断是否发生碰撞
             judgeAttack(bufG);
