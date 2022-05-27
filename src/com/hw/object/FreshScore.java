@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class FreshScore {
-    private final String fileAddress = "score_image/";
     public int x, y;
     public FreshScore(int x, int y) {
         this.x = x;
         this.y = y;
+        String fileAddress = "score_image/";
         ImageIcon scoreIcon = new ImageIcon(fileAddress + "score.png");
         Image score = scoreIcon.getImage();
         ImageIcon num0 = new ImageIcon(fileAddress + "0.png");
