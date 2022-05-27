@@ -34,7 +34,12 @@ public class FreshScore {
     }
 
     //刷新游戏中得到的分数
-    public void refreshScore() {
+    public void refreshScore(Graphics g) {
+
+    }
+
+    //绘制game over,游戏结束
+    public void gameOver(Graphics g) {
 
     }
 }

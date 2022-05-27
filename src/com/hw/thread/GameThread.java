@@ -83,13 +83,27 @@ public class GameThread implements Runnable {
 
     //判断敌人是否打中我方
     private void judgeAttackMe(Graphics g) {
-        //首先判断恶魔发射的子弹是否打中我
+        //首先获取我机的位置
+        int my_x = plane.location.x;
+        int my_y = plane.location.y;
+        //然后判断恶魔发射的子弹是否打中我
         for (int i = 0; i < attackers.size(); ++i) {
             FlyObject rebel = attackers.get(i);
             int rx = rebel.location.x;
             int ry = rebel.location.y;
-            fs = new FreshScore(rx, ry);
-
+            int distance = (int) Math.sqrt(Math.pow((my_x - rx), 2) + Math.pow((my_y - ry), 2));
+            if (distance <= 30) {
+                //飞机的hp要减
+                plane.hp -= 1;
+                //分数也要减
+                this.score -= 3;
+                fs = new FreshScore(rx, ry);
+                fs.refreshScore(g);
+                //飞机的血量都小于0了,必然game over
+                if (plane.hp <= 0) {
+                    fs.gameOver(g);
+                }
+            }
         }
     }
 
@@ -112,7 +126,7 @@ public class GameThread implements Runnable {
                     //僵尸的血量减少
                     zombie.hp -= myBullet.hp;
                     if (zombie.hp <= 0) {
-                        this.score += 5;
+                        this.score += 7;
                         //添加爆炸特效
                         explode(zombie, g);
                         zombie.img = null;
@@ -137,7 +151,7 @@ public class GameThread implements Runnable {
                 if (distance <= 40) {
                     demon.hp -= myBullet.hp;
                     if (demon.hp <= 0) {
-                        this.score += 10;
+                        this.score += 14;
                         explode(demon, g);
                         demon.img = null;
                         demon.location = new MyVector(-1100, 0);
