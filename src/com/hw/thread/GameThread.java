@@ -20,6 +20,7 @@ public class GameThread implements Runnable {
     private ImageIcon backgroundImage; //游戏背景
     public static String fileAddress = "img/"; //图片的存储根目录
     private Listener listener;
+
     public Vector<FlyObject> enemies, attackers, demons;
     public GameThread(Graphics g, JFrame jf) {
         this.g = g;

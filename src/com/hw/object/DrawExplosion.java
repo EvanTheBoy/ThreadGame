@@ -8,7 +8,6 @@ public class DrawExplosion {
     private final ImageIcon[] image2 = new ImageIcon[14]; //存放恶魔的爆炸效果图
     private final ImageIcon[] image3 = new ImageIcon[6]; //存放子弹的爆炸效果图
     public int index = 0;
-
     public int x, y;
     public DrawExplosion(int x, int y) {
         this.x = x;
