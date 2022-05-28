@@ -8,7 +8,7 @@ import java.util.Vector;
 public class Plane extends FlyObject {
     public Vector<FlyObject> bullets;
     public Plane(MyVector location, MyVector velocity, MyVector accelerator, String imgName, int HP) {
-        super(location, velocity, accelerator, imgName);
+        super(location, velocity, accelerator, imgName, HP);
         bullets = new Vector<>();
     }
 
