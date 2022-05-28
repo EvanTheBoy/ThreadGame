@@ -90,11 +90,10 @@ public class GameThread implements Runnable {
             FlyObject rebel = attackers.get(i);
             int rx = rebel.location.x;
             int ry = rebel.location.y;
-//            int distance = (int) Math.sqrt(Math.pow((my_x - rx), 2) + Math.pow((my_y - ry), 2));
-            if (Math.abs(my_x - rx) <= 30) {
-                int down = my_y - ry;
-                int up = ry - my_y;
-                if ((down >= 0 && down <= 40) || (up >= 0 && up <= 20)) {
+            if (Math.abs(my_x - rx) <= 28) {
+                int down = my_y - ry; //子弹打中飞机下翼
+                int up = ry - my_y; //子弹打中飞机上翼
+                if ((down >= 0 && down <= 60) || (up >= 0 && up <= 20)) {
                     //飞机的hp要减
                     plane.hp -= 1;
                     rebel.img = null;
@@ -133,6 +132,8 @@ public class GameThread implements Runnable {
                         zombie.img = null;
                         zombie.location = new MyVector(-1100, 0);
                     }
+//                    myBullet.img = null;
+//                    myBullet.location = new MyVector(-1100, 0);
                 }
             }
         }
@@ -157,6 +158,8 @@ public class GameThread implements Runnable {
                         demon.img = null;
                         demon.location = new MyVector(-1100, 0);
                     }
+//                    myBullet.img = null;
+//                    myBullet.location = new MyVector(-1100, 0);
                 }
             }
         }
@@ -180,6 +183,8 @@ public class GameThread implements Runnable {
                         bullet.img = null;
                         bullet.location = new MyVector(-1100, 0);
                     }
+//                    myBullet.img = null;
+//                    myBullet.location = new MyVector(-1100, 0);
                 }
             }
         }
