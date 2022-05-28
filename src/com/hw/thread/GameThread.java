@@ -90,15 +90,19 @@ public class GameThread implements Runnable {
             FlyObject rebel = attackers.get(i);
             int rx = rebel.location.x;
             int ry = rebel.location.y;
-            int distance = (int) Math.sqrt(Math.pow((my_x - rx), 2) + Math.pow((my_y - ry), 2));
-            if (distance <= 30) {
-                //飞机的hp要减
-                plane.hp -= 1;
-                rebel.img = null;
-                rebel.location = new MyVector(-1100, 0);
-                //飞机的血量都小于0了,必然game over
-                if (plane.hp <= 0) {
-                    System.out.println("飞机阵亡!");
+//            int distance = (int) Math.sqrt(Math.pow((my_x - rx), 2) + Math.pow((my_y - ry), 2));
+            if (Math.abs(my_x - rx) <= 30) {
+                int down = my_y - ry;
+                int up = ry - my_y;
+                if ((down >= 0 && down <= 40) || (up >= 0 && up <= 20)) {
+                    //飞机的hp要减
+                    plane.hp -= 1;
+                    rebel.img = null;
+                    rebel.location = new MyVector(-1100, 0);
+                    //飞机的血量都小于0了,必然game over
+                    if (plane.hp <= 0) {
+                        System.out.println("飞机阵亡!");
+                    }
                 }
             }
         }
