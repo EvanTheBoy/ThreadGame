@@ -31,7 +31,7 @@ public class GameThread implements Runnable {
         MyVector velocity = new MyVector(0, 0);
         MyVector accelerator = new MyVector(0, 0);
         //线程刚启动时就画出飞机
-        plane = new Plane(location, velocity, accelerator, "command_post.png");
+        plane = new Plane(location, velocity, accelerator, "command_post.png", 100);
         listener = new Listener(plane);
     }
 
@@ -94,6 +94,8 @@ public class GameThread implements Runnable {
             if (distance <= 30) {
                 //飞机的hp要减
                 plane.hp -= 1;
+                rebel.img = null;
+                rebel.location = new MyVector(-1100, 0);
                 //飞机的血量都小于0了,必然game over
                 if (plane.hp <= 0) {
                     System.out.println("飞机阵亡!");
@@ -201,6 +203,7 @@ public class GameThread implements Runnable {
             //把我方飞机画出来
             plane.drawObject(bufG);
             plane.move();
+            System.out.println("我机的生命值是:" + plane.hp);
             //绘制气球僵尸
             for (int i = 0; i < enemies.size(); ++i) {
                 FlyObject f = enemies.get(i);
@@ -227,9 +230,14 @@ public class GameThread implements Runnable {
             }
             //判断是否发生碰撞
             judgeAttack(bufG);
-            //刷新分数
+            //判断敌人是否打中我机
+            judgeAttackMe(bufG);
+
+            //刷新分数和我机生命值
             FreshNumbers fs = new FreshNumbers(score, plane.hp);
             fs.refreshScore(bufG);
+            fs.refreshLives(bufG);
+
             //最后记得要把这个也画出来
             g.drawImage(bufferedImage, 0, 0, null);
             try {
