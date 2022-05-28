@@ -2,7 +2,7 @@ package com.hw.thread;
 
 import com.hw.listener.Listener;
 import com.hw.object.FlyObject;
-import com.hw.object.FreshScore;
+import com.hw.object.FreshNumbers;
 import com.hw.object.Plane;
 import com.hw.object.DrawExplosion;
 import com.hw.parameter.MyVector;
@@ -21,7 +21,6 @@ public class GameThread implements Runnable {
     private boolean gameRest; //判断游戏是否暂停
     public static String fileAddress = "img/"; //图片的存储根目录
     private Listener listener;
-    private FreshScore fs; //刷新游戏分数
 
     public Vector<FlyObject> enemies, attackers, demons;
     public GameThread(Graphics g, JFrame jf) {
@@ -95,13 +94,9 @@ public class GameThread implements Runnable {
             if (distance <= 30) {
                 //飞机的hp要减
                 plane.hp -= 1;
-                //分数也要减
-                this.score -= 3;
-                fs = new FreshScore(rx, ry);
-                fs.refreshScore(g);
                 //飞机的血量都小于0了,必然game over
                 if (plane.hp <= 0) {
-                    fs.gameOver(g);
+                    System.out.println("飞机阵亡!");
                 }
             }
         }
@@ -232,6 +227,9 @@ public class GameThread implements Runnable {
             }
             //判断是否发生碰撞
             judgeAttack(bufG);
+            //刷新分数
+            FreshNumbers fs = new FreshNumbers(score, plane.hp);
+            fs.refreshScore(bufG);
             //最后记得要把这个也画出来
             g.drawImage(bufferedImage, 0, 0, null);
             try {
