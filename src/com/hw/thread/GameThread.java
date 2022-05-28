@@ -23,6 +23,7 @@ public class GameThread implements Runnable {
     private Listener listener;
 
     public Vector<FlyObject> enemies, attackers, demons;
+
     public GameThread(Graphics g, JFrame jf) {
         this.g = g;
         this.jf = jf;
@@ -44,7 +45,7 @@ public class GameThread implements Runnable {
             int zx = object.location.x;
             int zy = object.location.y;
             ze = new DrawExplosion(zx, zy);
-            for (; ;) {
+            for (; ; ) {
                 if (ze.index < 11) {
                     ze.drawZombieExplosion(g);
                 } else {
@@ -57,7 +58,7 @@ public class GameThread implements Runnable {
             int dx = object.location.x;
             int dy = object.location.y;
             ze = new DrawExplosion(dx, dy);
-            for (; ;) {
+            for (; ; ) {
                 if (ze.index < 14) {
                     ze.drawDemonExplosion(g);
                 } else {
@@ -70,7 +71,7 @@ public class GameThread implements Runnable {
             int zbx = object.location.x;
             int zby = object.location.y;
             ze = new DrawExplosion(zbx, zby);
-            for (; ;) {
+            for (; ; ) {
                 if (ze.index < 6) {
                     ze.drawBulletExplosion(g);
                 } else {
@@ -121,22 +122,27 @@ public class GameThread implements Runnable {
                 int bx = myBullet.location.x;
                 int by = myBullet.location.y;
                 //算出子弹与僵尸的位置差
-                int distance = (int)Math.sqrt(Math.pow((zx - bx), 2) + Math.pow((zy - by), 2));
+                int distance = (int) Math.sqrt(Math.pow((zx - bx), 2) + Math.pow((zy - by), 2));
                 if (distance <= 30) {
                     //僵尸的血量减少
                     zombie.hp -= myBullet.hp;
+                    System.out.println("僵尸血量:" + zombie.hp);
+                    System.out.println("僵尸的血减少啦!");
                     if (zombie.hp <= 0) {
+                        System.out.println("击中僵尸!");
                         this.score += 7;
                         //添加爆炸特效
                         explode(zombie, g);
                         zombie.img = null;
-                        zombie.location = new MyVector(-1100, 0);
+                        enemies.remove(zombie);
+                        break;
                     }
-//                    myBullet.img = null;
-//                    myBullet.location = new MyVector(-1100, 0);
+                    myBullet.img = null;
+                    plane.bullets.remove(myBullet);
                 }
             }
         }
+
         //判断是否打中恶魔
         for (int i = 0; i < demons.size(); ++i) {
             FlyObject demon = demons.get(i);
@@ -152,17 +158,21 @@ public class GameThread implements Runnable {
                 int distance = (int) Math.sqrt(Math.pow((dx - bx), 2) + Math.pow((dy - by), 2));
                 if (distance <= 40) {
                     demon.hp -= myBullet.hp;
+                    System.out.println("恶魔的血减少啦!");
                     if (demon.hp <= 0) {
+                        System.out.println("击中恶魔!");
                         this.score += 14;
                         explode(demon, g);
                         demon.img = null;
-                        demon.location = new MyVector(-1100, 0);
+                        demons.remove(demon);
+                        break;
                     }
-//                    myBullet.img = null;
-//                    myBullet.location = new MyVector(-1100, 0);
+                    myBullet.img = null;
+                    plane.bullets.remove(myBullet);
                 }
             }
         }
+
         //判断是否打中子弹
         for (int i = 0; i < attackers.size(); ++i) {
             FlyObject bullet = attackers.get(i);
@@ -178,16 +188,23 @@ public class GameThread implements Runnable {
                 int distance = (int) Math.sqrt(Math.pow((zbx - bx), 2) + Math.pow((zby - by), 2));
                 if (distance <= 20) {
                     bullet.hp -= myBullet.hp;
+                    System.out.println("子弹没啦!");
                     if (bullet.hp <= 0) {
+                        System.out.println("击中敌方子弹!");
                         explode(bullet, g);
                         bullet.img = null;
-                        bullet.location = new MyVector(-1100, 0);
+                        //  bullet.location = new MyVector(-1100, 0);
+                        attackers.remove(bullet);
+                        break;
                     }
-//                    myBullet.img = null;
-//                    myBullet.location = new MyVector(-1100, 0);
+                    myBullet.img = null;
+                    plane.bullets.remove(myBullet);
+                    //  myBullet.location = new MyVector(-1100, 0);
+
                 }
             }
         }
+
     }
 
     @Override
@@ -212,7 +229,6 @@ public class GameThread implements Runnable {
             //把我方飞机画出来
             plane.drawObject(bufG);
             plane.move();
-            System.out.println("我机的生命值是:" + plane.hp);
             //绘制气球僵尸
             for (int i = 0; i < enemies.size(); ++i) {
                 FlyObject f = enemies.get(i);

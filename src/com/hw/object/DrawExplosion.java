@@ -35,7 +35,6 @@ public class DrawExplosion {
         }
         g.drawImage(image1[index].getImage(), x - 10, y, null);
         ++index;
-        System.out.println("僵尸的index = " + index);
     }
 
     //绘制恶魔的爆炸效果
@@ -47,7 +46,6 @@ public class DrawExplosion {
         }
         g.drawImage(image2[index].getImage(), x - 10, y, null);
         ++index;
-        System.out.println("恶魔的index = " + index);
     }
 
     //绘制子弹的爆炸效果
@@ -59,6 +57,5 @@ public class DrawExplosion {
         }
         g.drawImage(image3[index].getImage(), x - 5, y, null);
         ++index;
-        System.out.println("子弹的index = " + index);
     }
 }
