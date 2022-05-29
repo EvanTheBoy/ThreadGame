@@ -21,7 +21,6 @@ public class GameThread implements Runnable {
     private boolean gameRest; //判断游戏是否暂停
     public static String fileAddress = "img/"; //图片的存储根目录
     private Listener listener;
-
     public Vector<FlyObject> enemies, attackers, demons;
 
     public GameThread(Graphics g, JFrame jf) {
