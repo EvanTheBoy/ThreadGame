@@ -46,6 +46,7 @@ public class DrawExplosion {
         }
         g.drawImage(image2[index].getImage(), x - 10, y, null);
         ++index;
+        System.out.println("恶魔爆炸图绘制,现在是第" + index + "张");
     }
 
     //绘制子弹的爆炸效果

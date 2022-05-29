@@ -41,7 +41,6 @@ public class GameThread implements Runnable {
         DrawExplosion ze;
         if (object.imgName.equals(fileAddress + "balloon_zombie.png")) {
             //现在是获取僵尸位置
-            System.out.println("获取到僵尸的位置了!");
             int zx = object.location.x;
             int zy = object.location.y;
             ze = new DrawExplosion(zx, zy);
@@ -86,90 +85,163 @@ public class GameThread implements Runnable {
         //首先获取我机的位置
         int my_x = plane.location.x;
         int my_y = plane.location.y;
-        //然后判断恶魔发射的子弹是否打中我
-        for (int i = 0; i < attackers.size(); ++i) {
-            FlyObject rebel = attackers.get(i);
-            int rx = rebel.location.x;
-            int ry = rebel.location.y;
-            if (Math.abs(my_x - rx) <= 28) {
-                int down = my_y - ry; //子弹打中飞机下翼
-                int up = ry - my_y; //子弹打中飞机上翼
-                if ((down >= 0 && down <= 60) || (up >= 0 && up <= 20)) {
-                    //飞机的hp要减
-                    plane.hp -= 1;
-                    rebel.img = null;
-                    rebel.location = new MyVector(-1100, 0);
-                    //飞机的血量都小于0了,必然game over
-                    if (plane.hp <= 0) {
-                        System.out.println("飞机阵亡!");
-                    }
-                }
-            }
-        }
-
-        //判断僵尸是否碰撞我机
         for (int i = 0; i < enemies.size(); ++i) {
             FlyObject rebel = enemies.get(i);
+            //获取位置
             int rx = rebel.location.x;
             int ry = rebel.location.y;
-            if (Math.abs(my_x - rx) <= 25) {
-                int down = my_y - ry;
-                int up = ry - my_y;
-                if ((down >= 0 && down <= 88) || (up >= 0 && up <= 48)) {
-                    plane.hp -= 3;
+            int down = my_y - ry;
+            int up = ry - my_y;
+            if (rebel.imgName.equals(fileAddress + "balloon_zombie.png")) { //如果是僵尸
+                if (Math.abs(my_x - rx) <= 25) {
+                    if ((down >= 0 && down <= 88) || (up >= 0 && up <= 48)) {
+                        plane.hp -= 3;
+                        rebel.img = null;
+                        rebel.location = new MyVector(-1100, 0);
+                        if (plane.hp <= 0) {
+                            System.out.println("飞机阵亡!");
+                        }
+                    }
+                }
+            } else if (rebel.imgName.equals(fileAddress + "bullet_monster.png")) { //如果是恶魔
+                if (((rx - my_x) <= 14 && down >= 0 && down <= 120) || (((rx - my_x) <= 45) && up >= 0 && up <= 60)) {
+                    plane.hp -= 6;
                     rebel.img = null;
                     rebel.location = new MyVector(-1100, 0);
                     if (plane.hp <= 0) {
-                        System.out.println("飞机阵亡!");
+                        System.out.println("飞机没了!");
+                    }
+                }
+            } else if (rebel.imgName.equals(fileAddress + "zombie_bullet.png")) { //如果是恶魔发射的子弹
+                if (Math.abs(my_x - rx) <= 28) {
+                    if ((down >= 0 && down <= 60) || (up >= 0 && up <= 20)) {
+                        //飞机的hp要减
+                        plane.hp -= 1;
+                        rebel.img = null;
+                        rebel.location = new MyVector(-1100, 0);
+                        //飞机的血量都小于0了,必然game over
+                        if (plane.hp <= 0) {
+                            System.out.println("飞机阵亡!");
+                        }
                     }
                 }
             }
         }
-
-        //判断恶魔是否与我机碰撞
-        for (int i = 0; i < demons.size(); ++i) {
-            FlyObject rebel = demons.get(i);
-            int rx = rebel.location.x;
-            int ry = rebel.location.y;
-            int down = my_y - ry; //我机在下面
-            int up = ry - my_y; //恶魔在下面
-            if (((rx - my_x) <= 14 && down >= 0 && down <= 120) || (((rx - my_x) <= 45) && up >= 0 && up <= 60)) {
-                plane.hp -= 6;
-                rebel.img = null;
-                rebel.location = new MyVector(-1100, 0);
-                if (plane.hp <= 0) {
-                    System.out.println("飞机没了!");
-                }
-            }
-        }
+//        //然后判断恶魔发射的子弹是否打中我
+//        for (int i = 0; i < attackers.size(); ++i) {
+//            FlyObject rebel = attackers.get(i);
+//            int rx = rebel.location.x;
+//            int ry = rebel.location.y;
+//            if (Math.abs(my_x - rx) <= 28) {
+//                int down = my_y - ry; //子弹打中飞机下翼
+//                int up = ry - my_y; //子弹打中飞机上翼
+//                if ((down >= 0 && down <= 60) || (up >= 0 && up <= 20)) {
+//                    //飞机的hp要减
+//                    plane.hp -= 1;
+//                    rebel.img = null;
+//                    rebel.location = new MyVector(-1100, 0);
+//                    //飞机的血量都小于0了,必然game over
+//                    if (plane.hp <= 0) {
+//                        System.out.println("飞机阵亡!");
+//                    }
+//                }
+//            }
+//        }
+//
+//        //判断僵尸是否碰撞我机
+//        for (int i = 0; i < enemies.size(); ++i) {
+//            FlyObject rebel = enemies.get(i);
+//            int rx = rebel.location.x;
+//            int ry = rebel.location.y;
+//            if (Math.abs(my_x - rx) <= 25) {
+//                int down = my_y - ry;
+//                int up = ry - my_y;
+//                if ((down >= 0 && down <= 88) || (up >= 0 && up <= 48)) {
+//                    plane.hp -= 3;
+//                    rebel.img = null;
+//                    rebel.location = new MyVector(-1100, 0);
+//                    if (plane.hp <= 0) {
+//                        System.out.println("飞机阵亡!");
+//                    }
+//                }
+//            }
+//        }
+//
+//        //判断恶魔是否与我机碰撞
+//        for (int i = 0; i < demons.size(); ++i) {
+//            FlyObject rebel = demons.get(i);
+//            int rx = rebel.location.x;
+//            int ry = rebel.location.y;
+//            int down = my_y - ry; //我机在下面
+//            int up = ry - my_y; //恶魔在下面
+//            if (((rx - my_x) <= 14 && down >= 0 && down <= 120) || (((rx - my_x) <= 45) && up >= 0 && up <= 60)) {
+//                plane.hp -= 6;
+//                rebel.img = null;
+//                rebel.location = new MyVector(-1100, 0);
+//                if (plane.hp <= 0) {
+//                    System.out.println("飞机没了!");
+//                }
+//            }
+//        }
     }
 
     //判断我方子弹是否打中敌人
     private void judgeAttack(Graphics g) {
-        //判断是否打中僵尸
         for (int i = 0; i < enemies.size(); ++i) {
-            FlyObject zombie = enemies.get(i);
-            //现在获取僵尸的位置
-            int zx = zombie.location.x;
-            int zy = zombie.location.y;
+            FlyObject enemy = enemies.get(i);
+            //记录敌人的位置
+            int ex = enemy.location.x;
+            int ey = enemy.location.y;
             for (int j = 0; j < plane.bullets.size(); ++j) {
                 FlyObject myBullet = plane.bullets.get(j);
-                //首先记录子弹的位置
+                //记录子弹位置
                 int bx = myBullet.location.x;
                 int by = myBullet.location.y;
-                //算出子弹与僵尸的位置差
-                if ((zx - bx) <= 20) {
-                    int down = zy - by; //子弹击中僵尸下方
-                    int up = by - zy; //子弹击中僵尸上方
-                    if ((down >= 0 && down <= 35) || (up >= 0 && up <= 33)) {
-                        //僵尸的血量减少
-                        zombie.hp -= myBullet.hp;
-                        if (zombie.hp <= 0) {
-                            this.score += 7;
-                            //添加爆炸特效
-                            explode(zombie, g);
-                            zombie.img = null;
-                            enemies.remove(zombie);
+                int down = ey - by; //下翼
+                int up = by - ey; //上翼
+                if (enemy.imgName.equals(fileAddress + "balloon_zombie.png")) { //如果敌人是僵尸
+                    //算出子弹与僵尸的位置差
+                    if ((ex - bx) <= 20) {
+                        if ((down >= 0 && down <= 35) || (up >= 0 && up <= 33)) {
+                            //僵尸的血量减少
+                            enemy.hp -= myBullet.hp;
+                            if (enemy.hp <= 0) {
+                                this.score += 7;
+                                //添加爆炸特效
+                                explode(enemy, g);
+                                enemy.img = null;
+                                enemies.remove(enemy);
+                                break;
+                            }
+                            myBullet.img = null;
+                            plane.bullets.remove(myBullet);
+                        }
+                    }
+                } else if (enemy.imgName.equals(fileAddress + "bullet_monster.png")) { //如果敌人是恶魔
+                    //算出子弹与恶魔的位置差
+                    if ((ex - bx) <= 25) {
+                        if ((up >= 0 && up <= 50) || (down >= 0 && down <= 40)) {
+                            enemy.hp -= myBullet.hp;
+                            if (enemy.hp <= 0) {
+                                this.score += 14;
+                                explode(enemy, g);
+                                enemy.img = null;
+                                demons.remove(enemy);
+                                break;
+                            }
+                            myBullet.img = null;
+                            plane.bullets.remove(myBullet);
+                        }
+                    }
+                } else if (enemy.imgName.equals(fileAddress + "zombie_bullet.png")) { //如果敌人是恶魔发射的子弹
+                    //算出子弹与恶魔发射的子弹的位置差
+                    int distance = (int) Math.sqrt(Math.pow((ex - bx), 2) + Math.pow((ey - by), 2));
+                    if (distance <= 20) {
+                        enemy.hp -= myBullet.hp;
+                        if (enemy.hp <= 0) {
+                            explode(enemy, g);
+                            enemy.img = null;
+                            attackers.remove(enemy);
                             break;
                         }
                         myBullet.img = null;
@@ -178,64 +250,96 @@ public class GameThread implements Runnable {
                 }
             }
         }
-
-        //判断是否打中恶魔
-        for (int i = 0; i < demons.size(); ++i) {
-            FlyObject demon = demons.get(i);
-            //获取恶魔的位置
-            int dx = demon.location.x;
-            int dy = demon.location.y;
-            for (int j = 0; j < plane.bullets.size(); ++j) {
-                FlyObject myBullet = plane.bullets.get(j);
-                //记录子弹位置
-                int bx = myBullet.location.x;
-                int by = myBullet.location.y;
-                //算出子弹与恶魔的位置差
-                if ((dx - bx) <= 25) {
-                    int down = by - dy;
-                    int up = dy - by;
-                    if ((down >= 0 && down <= 50) || (up >= 0 && up <= 40)) {
-                        demon.hp -= myBullet.hp;
-                        if (demon.hp <= 0) {
-                            this.score += 14;
-                            explode(demon, g);
-                            demon.img = null;
-                            demons.remove(demon);
-                            break;
-                        }
-                        myBullet.img = null;
-                        plane.bullets.remove(myBullet);
-                    }
-                }
-            }
-        }
-
-        //判断是否打中子弹
-        for (int i = 0; i < attackers.size(); ++i) {
-            FlyObject bullet = attackers.get(i);
-            //获取子弹的位置
-            int zbx = bullet.location.x;
-            int zby = bullet.location.y;
-            for (int j = 0; j < plane.bullets.size(); ++j) {
-                FlyObject myBullet = plane.bullets.get(j);
-                //记录子弹位置
-                int bx = myBullet.location.x;
-                int by = myBullet.location.y;
-                //算出子弹与恶魔的位置差
-                int distance = (int) Math.sqrt(Math.pow((zbx - bx), 2) + Math.pow((zby - by), 2));
-                if (distance <= 20) {
-                    bullet.hp -= myBullet.hp;
-                    if (bullet.hp <= 0) {
-                        explode(bullet, g);
-                        bullet.img = null;
-                        attackers.remove(bullet);
-                        break;
-                    }
-                    myBullet.img = null;
-                    plane.bullets.remove(myBullet);
-                }
-            }
-        }
+//        //判断是否打中僵尸
+//        for (int i = 0; i < enemies.size(); ++i) {
+//            FlyObject zombie = enemies.get(i);
+//            //现在获取僵尸的位置
+//            int zx = zombie.location.x;
+//            int zy = zombie.location.y;
+//            for (int j = 0; j < plane.bullets.size(); ++j) {
+//                FlyObject myBullet = plane.bullets.get(j);
+//                //首先记录子弹的位置
+//                int bx = myBullet.location.x;
+//                int by = myBullet.location.y;
+//                //算出子弹与僵尸的位置差
+//                if ((zx - bx) <= 20) {
+//                    int down = zy - by; //子弹击中僵尸下方
+//                    int up = by - zy; //子弹击中僵尸上方
+//                    if ((down >= 0 && down <= 35) || (up >= 0 && up <= 33)) {
+//                        //僵尸的血量减少
+//                        zombie.hp -= myBullet.hp;
+//                        if (zombie.hp <= 0) {
+//                            this.score += 7;
+//                            //添加爆炸特效
+//                            explode(zombie, g);
+//                            zombie.img = null;
+//                            enemies.remove(zombie);
+//                            break;
+//                        }
+//                        myBullet.img = null;
+//                        plane.bullets.remove(myBullet);
+//                    }
+//                }
+//            }
+//        }
+//
+//        //判断是否打中恶魔
+//        for (int i = 0; i < demons.size(); ++i) {
+//            FlyObject demon = demons.get(i);
+//            //获取恶魔的位置
+//            int dx = demon.location.x;
+//            int dy = demon.location.y;
+//            for (int j = 0; j < plane.bullets.size(); ++j) {
+//                FlyObject myBullet = plane.bullets.get(j);
+//                //记录子弹位置
+//                int bx = myBullet.location.x;
+//                int by = myBullet.location.y;
+//                //算出子弹与恶魔的位置差
+//                if ((dx - bx) <= 25) {
+//                    int down = by - dy;
+//                    int up = dy - by;
+//                    if ((down >= 0 && down <= 50) || (up >= 0 && up <= 40)) {
+//                        demon.hp -= myBullet.hp;
+//                        if (demon.hp <= 0) {
+//                            this.score += 14;
+//                            explode(demon, g);
+//                            demon.img = null;
+//                            demons.remove(demon);
+//                            break;
+//                        }
+//                        myBullet.img = null;
+//                        plane.bullets.remove(myBullet);
+//                    }
+//                }
+//            }
+//        }
+//
+//        //判断是否打中子弹
+//        for (int i = 0; i < attackers.size(); ++i) {
+//            FlyObject bullet = attackers.get(i);
+//            //获取子弹的位置
+//            int zbx = bullet.location.x;
+//            int zby = bullet.location.y;
+//            for (int j = 0; j < plane.bullets.size(); ++j) {
+//                FlyObject myBullet = plane.bullets.get(j);
+//                //记录子弹位置
+//                int bx = myBullet.location.x;
+//                int by = myBullet.location.y;
+//                //算出子弹与恶魔发射的子弹的位置差
+//                int distance = (int) Math.sqrt(Math.pow((zbx - bx), 2) + Math.pow((zby - by), 2));
+//                if (distance <= 20) {
+//                    bullet.hp -= myBullet.hp;
+//                    if (bullet.hp <= 0) {
+//                        explode(bullet, g);
+//                        bullet.img = null;
+//                        attackers.remove(bullet);
+//                        break;
+//                    }
+//                    myBullet.img = null;
+//                    plane.bullets.remove(myBullet);
+//                }
+//            }
+//        }
     }
 
     @Override
@@ -266,18 +370,18 @@ public class GameThread implements Runnable {
                 f.drawObject(bufG);
                 f.move();
             }
-            //绘制恶魔
-            for (int i = 0; i < demons.size(); ++i) {
-                FlyObject d = demons.get(i);
-                d.drawObject(bufG);
-                d.move();
-            }
-            //恶魔发射子弹
-            for (int i = 0; i < attackers.size(); ++i) {
-                FlyObject a = attackers.get(i);
-                a.drawObject(bufG);
-                a.move();
-            }
+//            //绘制恶魔
+//            for (int i = 0; i < demons.size(); ++i) {
+//                FlyObject d = demons.get(i);
+//                d.drawObject(bufG);
+//                d.move();
+//            }
+//            //恶魔发射子弹
+//            for (int i = 0; i < attackers.size(); ++i) {
+//                FlyObject a = attackers.get(i);
+//                a.drawObject(bufG);
+//                a.move();
+//            }
             //生成我机攻击子弹
             for (int i = 0; i < plane.bullets.size(); ++i) {
                 FlyObject b = plane.bullets.get(i);

@@ -39,23 +39,29 @@ public class EnemyThread implements Runnable {
             MyVector vel = new MyVector(vx, 0);
             MyVector acc = new MyVector(0, 0);
             FlyObject demon = new FlyObject(loc, vel, acc, "bullet_monster.png", 6);
-            demons.add(demon);
+            enemies.add(demon);
+//            demons.add(demon);
         }
     }
 
     //生成恶魔发射的子弹
     private void generateBullets() {
-        for (FlyObject monster : demons) {
-            //然后获取僵尸的位置
-            int mx = monster.location.x;
-            int my = monster.location.y;
-            if (mx % 67 == 0) {
-                MyVector loc = new MyVector(mx - 60, my);
-                MyVector vel = new MyVector(-5, 0);
-                MyVector acc = new MyVector(0, 0);
-                //创建僵尸发射的子弹对象
-                FlyObject attacker = new FlyObject(loc, vel, acc, "zombie_bullet.png", 2);
-                attackers.add(attacker);
+//        for (FlyObject monster : demons) {
+        for (int i = 0; i < enemies.size(); ++i) {
+            FlyObject monster = enemies.get(i);
+            if (monster.imgName.equals("img/bullet_monster.png")) {
+                //然后获取僵尸的位置
+                int mx = monster.location.x;
+                int my = monster.location.y;
+                if (mx % 67 == 0) {
+                    MyVector loc = new MyVector(mx - 60, my);
+                    MyVector vel = new MyVector(-5, 0);
+                    MyVector acc = new MyVector(0, 0);
+                    //创建僵尸发射的子弹对象
+                    FlyObject attacker = new FlyObject(loc, vel, acc, "zombie_bullet.png", 2);
+                    enemies.add(attacker);
+//                attackers.add(attacker);
+                }
             }
         }
     }
