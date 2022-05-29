@@ -8,7 +8,7 @@ import java.util.Vector;
 
 public class EnemyThread implements Runnable {
     public Vector<FlyObject> enemies, demons, attackers;
-    private Random rand;
+    private final Random rand;
     private int count;
     public EnemyThread() {
         count = 0;

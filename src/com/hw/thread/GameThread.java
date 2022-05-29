@@ -106,6 +106,42 @@ public class GameThread implements Runnable {
                 }
             }
         }
+
+        //判断僵尸是否碰撞我机
+        for (int i = 0; i < enemies.size(); ++i) {
+            FlyObject rebel = enemies.get(i);
+            int rx = rebel.location.x;
+            int ry = rebel.location.y;
+            if (Math.abs(my_x - rx) <= 25) {
+                int down = my_y - ry;
+                int up = ry - my_y;
+                if ((down >= 0 && down <= 88) || (up >= 0 && up <= 48)) {
+                    plane.hp -= 3;
+                    rebel.img = null;
+                    rebel.location = new MyVector(-1100, 0);
+                    if (plane.hp <= 0) {
+                        System.out.println("飞机阵亡!");
+                    }
+                }
+            }
+        }
+
+        //判断恶魔是否与我机碰撞
+        for (int i = 0; i < demons.size(); ++i) {
+            FlyObject rebel = demons.get(i);
+            int rx = rebel.location.x;
+            int ry = rebel.location.y;
+            int down = my_y - ry; //我机在下面
+            int up = ry - my_y; //恶魔在下面
+            if (((rx - my_x) <= 14 && down >= 0 && down <= 120) || (((rx - my_x) <= 45) && up >= 0 && up <= 60)) {
+                plane.hp -= 6;
+                rebel.img = null;
+                rebel.location = new MyVector(-1100, 0);
+                if (plane.hp <= 0) {
+                    System.out.println("飞机没了!");
+                }
+            }
+        }
     }
 
     //判断我方子弹是否打中敌人
@@ -122,23 +158,23 @@ public class GameThread implements Runnable {
                 int bx = myBullet.location.x;
                 int by = myBullet.location.y;
                 //算出子弹与僵尸的位置差
-                int distance = (int) Math.sqrt(Math.pow((zx - bx), 2) + Math.pow((zy - by), 2));
-                if (distance <= 30) {
-                    //僵尸的血量减少
-                    zombie.hp -= myBullet.hp;
-                    System.out.println("僵尸血量:" + zombie.hp);
-                    System.out.println("僵尸的血减少啦!");
-                    if (zombie.hp <= 0) {
-                        System.out.println("击中僵尸!");
-                        this.score += 7;
-                        //添加爆炸特效
-                        explode(zombie, g);
-                        zombie.img = null;
-                        enemies.remove(zombie);
-                        break;
+                if ((zx - bx) <= 20) {
+                    int down = zy - by; //子弹击中僵尸下方
+                    int up = by - zy; //子弹击中僵尸上方
+                    if ((down >= 0 && down <= 35) || (up >= 0 && up <= 33)) {
+                        //僵尸的血量减少
+                        zombie.hp -= myBullet.hp;
+                        if (zombie.hp <= 0) {
+                            this.score += 7;
+                            //添加爆炸特效
+                            explode(zombie, g);
+                            zombie.img = null;
+                            enemies.remove(zombie);
+                            break;
+                        }
+                        myBullet.img = null;
+                        plane.bullets.remove(myBullet);
                     }
-                    myBullet.img = null;
-                    plane.bullets.remove(myBullet);
                 }
             }
         }
@@ -155,20 +191,21 @@ public class GameThread implements Runnable {
                 int bx = myBullet.location.x;
                 int by = myBullet.location.y;
                 //算出子弹与恶魔的位置差
-                int distance = (int) Math.sqrt(Math.pow((dx - bx), 2) + Math.pow((dy - by), 2));
-                if (distance <= 40) {
-                    demon.hp -= myBullet.hp;
-                    System.out.println("恶魔的血减少啦!");
-                    if (demon.hp <= 0) {
-                        System.out.println("击中恶魔!");
-                        this.score += 14;
-                        explode(demon, g);
-                        demon.img = null;
-                        demons.remove(demon);
-                        break;
+                if ((dx - bx) <= 25) {
+                    int down = by - dy;
+                    int up = dy - by;
+                    if ((down >= 0 && down <= 50) || (up >= 0 && up <= 40)) {
+                        demon.hp -= myBullet.hp;
+                        if (demon.hp <= 0) {
+                            this.score += 14;
+                            explode(demon, g);
+                            demon.img = null;
+                            demons.remove(demon);
+                            break;
+                        }
+                        myBullet.img = null;
+                        plane.bullets.remove(myBullet);
                     }
-                    myBullet.img = null;
-                    plane.bullets.remove(myBullet);
                 }
             }
         }
@@ -188,23 +225,17 @@ public class GameThread implements Runnable {
                 int distance = (int) Math.sqrt(Math.pow((zbx - bx), 2) + Math.pow((zby - by), 2));
                 if (distance <= 20) {
                     bullet.hp -= myBullet.hp;
-                    System.out.println("子弹没啦!");
                     if (bullet.hp <= 0) {
-                        System.out.println("击中敌方子弹!");
                         explode(bullet, g);
                         bullet.img = null;
-                        //  bullet.location = new MyVector(-1100, 0);
                         attackers.remove(bullet);
                         break;
                     }
                     myBullet.img = null;
                     plane.bullets.remove(myBullet);
-                    //  myBullet.location = new MyVector(-1100, 0);
-
                 }
             }
         }
-
     }
 
     @Override
