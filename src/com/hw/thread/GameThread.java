@@ -292,6 +292,7 @@ public class GameThread implements Runnable {
             flag[0] = true;
             ImageIcon gameOver = new ImageIcon("score_image/GameOver.png");
             Image over = gameOver.getImage();
+            hp = 0;
             g.drawImage(over, 193, 97, null);
         }
     }
