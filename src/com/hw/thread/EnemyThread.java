@@ -55,7 +55,7 @@ public class EnemyThread implements Runnable {
                 MyVector vel = new MyVector(-5, 0);
                 MyVector acc = new MyVector(0, 0);
                 //创建僵尸发射的子弹对象
-                FlyObject attacker = new FlyObject(loc, vel, acc, "zombie_bullet.png", 2);
+                FlyObject attacker = new FlyObject(loc, vel, acc, "zombie_bullet.png", 1);
                 attackers.add(attacker);
             }
         }

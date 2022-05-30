@@ -27,10 +27,8 @@ public class FlyObject {
         hm.put(imgAddress + "balloon_zombie.png", new MyVector(50, 50));
         hm.put(imgAddress + "bullet.png", new MyVector(17, 10));
         hm.put(imgAddress + "background.png", new MyVector(0, 0));
-        hm.put(imgAddress + "demon_boom.png", new MyVector(0, 0));
         hm.put(imgAddress + "zombie_bullet.png", new MyVector(0, 0));
         hm.put(imgAddress + "bullet_monster.png", new MyVector(50, 50));
-        hm.put(imgAddress + "bullet_boom.png", new MyVector(0, 0));
         hm.put(imgAddress + "zombie_explosion0.png", new MyVector(0, 0));
         hm.put(imgAddress + "zombie_explosion1.png", new MyVector(0, 0));
         hm.put(imgAddress + "zombie_explosion2.png", new MyVector(0, 0));

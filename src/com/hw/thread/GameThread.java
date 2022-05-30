@@ -236,6 +236,56 @@ public class GameThread implements Runnable {
         }
     }
 
+    //暂停画面中所有正在移动的物体
+    private void stopAll(Graphics g) {
+        MyVector vel = new MyVector(0, 0);
+        MyVector acc = new MyVector(0, 0);
+        for (int i = 0; i < enemies.size(); ++i) {
+            FlyObject zombie = enemies.get(i);
+            MyVector loc = zombie.location;
+            zombie = new FlyObject(loc, vel, acc, "balloon_zombie.png");
+            zombie.drawObject(g);
+            zombie.move();
+        }
+        for (int i = 0; i < demons.size(); ++i) {
+            FlyObject demon = demons.get(i);
+            MyVector loc = demon.location;
+            demon = new FlyObject(loc, vel, acc, "bullet_monster.png");
+            demon.drawObject(g);
+            demon.move();
+        }
+        for (int i = 0; i < attackers.size(); ++i) {
+            FlyObject bullet = attackers.get(i);
+            MyVector loc = bullet.location;
+            bullet = new FlyObject(loc, vel, acc, "zombie_bullet.png");
+            bullet.drawObject(g);
+            bullet.move();
+        }
+        for (int i = 0; i < plane.bullets.size(); ++i) {
+            FlyObject myBullet = plane.bullets.get(i);
+            MyVector loc = myBullet.location;
+            myBullet = new FlyObject(loc, vel, acc, "bullet.png");
+            myBullet.drawObject(g);
+            myBullet.move();
+        }
+    }
+
+    //判断是否可以赢
+    private void judgeWinning(Graphics g, int score) {
+        if (score >= 500) {
+            stopAll(g);
+            ImageIcon gameOver = new ImageIcon("score_image/");
+        }
+    }
+
+    //判断是否游戏结束
+    private void judgeGameOver(Graphics g, int hp) {
+        if (hp <= 0) {
+            stopAll(g);
+
+        }
+    }
+
     @Override
     public void run() {
         //获取缓冲区画笔对象
@@ -291,6 +341,9 @@ public class GameThread implements Runnable {
             FreshNumbers fs = new FreshNumbers(score, plane.hp);
             fs.refreshScore(bufG);
             fs.refreshLives(bufG);
+
+            //最后要判断是不是赢了
+
 
             //最后记得要把这个也画出来
             g.drawImage(bufferedImage, 0, 0, null);

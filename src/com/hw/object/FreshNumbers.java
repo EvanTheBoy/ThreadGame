@@ -21,9 +21,4 @@ public class FreshNumbers {
         g.setFont(new Font("仿宋", Font.BOLD, 40));
         g.drawString("生命值:" + hp, 8, 750);
     }
-
-    //绘制game over,游戏结束
-    public void gameOver(Graphics g) {
-
-    }
 }
