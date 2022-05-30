@@ -276,7 +276,7 @@ public class GameThread implements Runnable {
 
     //判断是否可以赢
     private void judgeWinning(Graphics g, int score) {
-        if (score >= 50) {
+        if (score >= 500) {
             stopAll(g);
             flag[0] = true;
             ImageIcon winning = new ImageIcon("score_image/YouWIN.png");
