@@ -2,45 +2,53 @@ package com.hw.thread;
 
 import com.hw.object.FlyObject;
 import com.hw.parameter.MyVector;
+import jdk.swing.interop.SwingInterOpUtils;
 
 import java.util.Random;
 import java.util.Vector;
 
 public class EnemyThread implements Runnable {
     public Vector<FlyObject> enemies, demons, attackers;
+    public boolean[] flag;
     private final Random rand;
     private int count;
+
     public EnemyThread() {
         count = 0;
         rand = new Random();
         enemies = new Vector<>();
         demons = new Vector<>();
         attackers = new Vector<>();
+        flag = new boolean[1];
     }
 
     //生成气球僵尸与恶魔
     private void generateZombies() {
-        if (count % 40 == 0) {
-            int ly = rand.nextInt(512) + 100;
-            int vx = -rand.nextInt(1) - 2;
-            MyVector loc = new MyVector(1024, ly);
-            MyVector vel = new MyVector(vx, 0);
-            MyVector acc = new MyVector(0, 0);
-            FlyObject zombie = new FlyObject(loc, vel, acc, "balloon_zombie.png", 3);
-            //这里之所以要用到队列，是因为僵尸画出来后要一直停留在页面上，也就是不停地画
-            //所以在这里就体现为，每创建出一个僵尸对象，就把它添加进队列中，然后从队列中取出来
-            //不停地画
-            enemies.add(zombie);
+        boolean gameOver = flag[0];
+        if (!gameOver) {
+            if (count % 40 == 0) {
+                int ly = rand.nextInt(512) + 100;
+                int vx = -rand.nextInt(1) - 2;
+                MyVector loc = new MyVector(1024, ly);
+                MyVector vel = new MyVector(vx, 0);
+                MyVector acc = new MyVector(0, 0);
+                FlyObject zombie = new FlyObject(loc, vel, acc, "balloon_zombie.png", 3);
+                //这里之所以要用到队列，是因为僵尸画出来后要一直停留在页面上，也就是不停地画
+                //所以在这里就体现为，每创建出一个僵尸对象，就把它添加进队列中，然后从队列中取出来
+                //不停地画
+                enemies.add(zombie);
+            }
+            if (count >= 300 && count % 90 == 0) {
+                int ly = rand.nextInt(502) + 103;
+                int vx = -rand.nextInt(1) - 3;
+                MyVector loc = new MyVector(1024, ly);
+                MyVector vel = new MyVector(vx, 0);
+                MyVector acc = new MyVector(0, 0);
+                FlyObject demon = new FlyObject(loc, vel, acc, "bullet_monster.png", 6);
+                demons.add(demon);
+            }
         }
-        if (count >= 300 && count % 90 == 0) {
-            int ly = rand.nextInt(502) + 103;
-            int vx = -rand.nextInt(1) - 3;
-            MyVector loc = new MyVector(1024, ly);
-            MyVector vel = new MyVector(vx, 0);
-            MyVector acc = new MyVector(0, 0);
-            FlyObject demon = new FlyObject(loc, vel, acc, "bullet_monster.png", 6);
-            demons.add(demon);
-        }
+
     }
 
     //生成恶魔发射的子弹

@@ -26,6 +26,7 @@ public class GameUI {
         gt.enemies = et.enemies;
         gt.demons = et.demons;
         gt.attackers = et.attackers;
+        et.flag = gt.flag;
         //优化:使用线程池来管理
         ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 10, 10,
                 TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(10));

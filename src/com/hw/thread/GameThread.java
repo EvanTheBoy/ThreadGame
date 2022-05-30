@@ -18,15 +18,17 @@ public class GameThread implements Runnable {
     private int score;
     private final Plane plane;
     private JFrame jf;
-    private boolean gameRest; //判断游戏是否暂停
+    private boolean gameOver = false; //判断游戏是否结束
     public static String fileAddress = "img/"; //图片的存储根目录
     private Listener listener;
     public Vector<FlyObject> enemies, attackers, demons;
+    public boolean[] flag;
 
     public GameThread(Graphics g, JFrame jf) {
         this.g = g;
         this.jf = jf;
         score = 0;
+        flag = new boolean[1];
         MyVector location = new MyVector(70, 384);
         MyVector velocity = new MyVector(0, 0);
         MyVector accelerator = new MyVector(0, 0);
@@ -238,33 +240,35 @@ public class GameThread implements Runnable {
 
     //暂停画面中所有正在移动的物体
     private void stopAll(Graphics g) {
-        MyVector vel = new MyVector(0, 0);
-        MyVector acc = new MyVector(0, 0);
         for (int i = 0; i < enemies.size(); ++i) {
             FlyObject zombie = enemies.get(i);
             MyVector loc = zombie.location;
-            zombie = new FlyObject(loc, vel, acc, "balloon_zombie.png");
+            zombie.velocity = new MyVector(0, 0);
+            zombie = new FlyObject(loc, zombie.velocity, zombie.accelerator, "balloon_zombie.png");
             zombie.drawObject(g);
             zombie.move();
         }
         for (int i = 0; i < demons.size(); ++i) {
             FlyObject demon = demons.get(i);
             MyVector loc = demon.location;
-            demon = new FlyObject(loc, vel, acc, "bullet_monster.png");
+            demon.velocity = new MyVector(0, 0);
+            demon = new FlyObject(loc, demon.velocity, demon.accelerator, "bullet_monster.png");
             demon.drawObject(g);
             demon.move();
         }
         for (int i = 0; i < attackers.size(); ++i) {
             FlyObject bullet = attackers.get(i);
             MyVector loc = bullet.location;
-            bullet = new FlyObject(loc, vel, acc, "zombie_bullet.png");
+            bullet.velocity = new MyVector(0, 0);
+            bullet = new FlyObject(loc, bullet.velocity, bullet.accelerator, "zombie_bullet.png");
             bullet.drawObject(g);
             bullet.move();
         }
         for (int i = 0; i < plane.bullets.size(); ++i) {
             FlyObject myBullet = plane.bullets.get(i);
             MyVector loc = myBullet.location;
-            myBullet = new FlyObject(loc, vel, acc, "bullet.png");
+            myBullet.velocity = new MyVector(0, 0);
+            myBullet = new FlyObject(loc, myBullet.velocity, myBullet.accelerator, "bullet.png");
             myBullet.drawObject(g);
             myBullet.move();
         }
@@ -272,9 +276,12 @@ public class GameThread implements Runnable {
 
     //判断是否可以赢
     private void judgeWinning(Graphics g, int score) {
-        if (score >= 500) {
+        if (score >= 50) {
             stopAll(g);
-            ImageIcon gameOver = new ImageIcon("score_image/");
+            flag[0] = true;
+            ImageIcon winning = new ImageIcon("score_image/YouWIN.png");
+            Image win = winning.getImage();
+            g.drawImage(win, 200, 100, null);
         }
     }
 
@@ -282,7 +289,10 @@ public class GameThread implements Runnable {
     private void judgeGameOver(Graphics g, int hp) {
         if (hp <= 0) {
             stopAll(g);
-
+            flag[0] = true;
+            ImageIcon gameOver = new ImageIcon("score_image/GameOver.png");
+            Image over = gameOver.getImage();
+            g.drawImage(over, 193, 97, null);
         }
     }
 
@@ -342,8 +352,9 @@ public class GameThread implements Runnable {
             fs.refreshScore(bufG);
             fs.refreshLives(bufG);
 
-            //最后要判断是不是赢了
-
+            //最后要判断是赢了还是输了
+            judgeWinning(bufG, fs.score);
+            judgeGameOver(bufG, plane.hp);
 
             //最后记得要把这个也画出来
             g.drawImage(bufferedImage, 0, 0, null);
