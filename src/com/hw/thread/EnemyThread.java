@@ -2,7 +2,6 @@ package com.hw.thread;
 
 import com.hw.object.FlyObject;
 import com.hw.parameter.MyVector;
-import jdk.swing.interop.SwingInterOpUtils;
 
 import java.util.Random;
 import java.util.Vector;
